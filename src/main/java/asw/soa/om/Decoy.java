@@ -12,7 +12,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import asw.soa.data.EntityEvent;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
-import asw.soa.event.MessageEvent;
 import asw.soa.main.SimUtil;
 import asw.soa.view.Visual2dService;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
