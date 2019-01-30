@@ -1,12 +1,5 @@
 package asw.soa.om;
 
-import java.awt.Color;
-import java.rmi.RemoteException;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import asw.soa.data.EntityEvent;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
@@ -24,16 +17,21 @@ import nl.tudelft.simulation.jstats.distributions.DistNormal;
 import nl.tudelft.simulation.jstats.streams.MersenneTwister;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
 import nl.tudelft.simulation.language.d3.CartesianPoint;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.awt.*;
+import java.rmi.RemoteException;
 
 /**
  * 
  * @author daiwenzhi
  */
-public class Fleet extends EventProducer implements EventListenerInterface {
+public class Fleet {
 
 	private static final long serialVersionUID = 5337683693470946049L;
 
-	public static final EventType FLEET_LOCATION_UPDATE_EVENT = new EventType("FLEET_LOCATION_UPDATE_EVENT");
+	//private static final EventType FLEET_LOCATION_UPDATE_EVENT = new EventType("FLEET_LOCATION_UPDATE_EVENT");
 
 	/** the simulator. */
 	private DEVSSimulatorInterface.TimeDouble simulator = null;
@@ -42,16 +40,16 @@ public class Fleet extends EventProducer implements EventListenerInterface {
 	/** the stream -- ugly but works. */
 	private static StreamInterface stream = new MersenneTwister();
 
-	public Decoy _decoy1;
+	private Decoy _decoy1;
 
-	public Decoy _decoy2;
+	private Decoy _decoy2;
 
-	public int decoyCouts = 2;
+	private int decoyCouts = 2;
 
 	/**
 	 * 探测到的威胁实体信息
 	 */
-	public EntityMSG lastThreat = null;
+	private EntityMSG lastThreat = null;
 
 	private volatile boolean isDead = false;
 
@@ -64,14 +62,14 @@ public class Fleet extends EventProducer implements EventListenerInterface {
 
 //	public Fleet(String name, double x, double y, final DEVSSimulatorInterface.TimeDouble simulator)
 //			throws RemoteException, SimRuntimeException {
-//		
+//
 //		_mdata.origin = new CartesianPoint(x, y, 0);
 //		_mdata.destination = new CartesianPoint(x, y, 0);
 //		this.simulator = simulator;
 //		this._mdata.name = name;
 //		_mdata.detectRange = 200;
 //		_mdata.belong = 1;
-//		
+//
 //
 //		_decoy1 = new Decoy(name + "_decoy1", x, y, simulator);
 //		_decoy2 = new Decoy(name + "_decoy2", x, y, simulator);
@@ -130,7 +128,7 @@ public class Fleet extends EventProducer implements EventListenerInterface {
 		EventBus.getDefault().post(new EntityEvent(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y));
 
 	}
-
+	/*
 	@Override
 	public synchronized void notify(final EventInterface event) throws RemoteException {
 		if (!isDead) {
@@ -182,7 +180,8 @@ public class Fleet extends EventProducer implements EventListenerInterface {
 			}
 		}
 	}
-	@Subscribe(threadMode = ThreadMode.MAIN)
+	*/
+	@Subscribe
 	public synchronized void onEntityEvent(EntityEvent event) throws SimRuntimeException {
 		this.simulator.scheduleEventAbs(this.simulator.getSimTime().plus(2.0), new Executable()
         {

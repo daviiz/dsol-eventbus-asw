@@ -26,14 +26,6 @@ class Visual2dRender extends Renderable2D<Locatable> {
 	 */
 	private ModelData data = new ModelData();
 
-	public ModelData getData() {
-		return data;
-	}
-
-	public void setData(ModelData data) {
-		this.data = data;
-	}
-
 	private Graphics2D graphics;
 	private ImageObserver observer;
 
@@ -110,7 +102,19 @@ class Visual2dRender extends Renderable2D<Locatable> {
 		this.data.color = color;
 	}
 
+	/**
+	 * update render
+	 * @param data2
+	 */
 	public void update(ModelData data2) {
 		this.data = data2;
+	}
+
+	public ModelData getData() {
+		return data;
+	}
+
+	public void setData(ModelData data) {
+		this.data = data;
 	}
 }

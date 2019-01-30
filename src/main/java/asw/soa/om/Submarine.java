@@ -1,12 +1,5 @@
 package asw.soa.om;
 
-import java.rmi.RemoteException;
-import java.util.HashMap;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import asw.soa.data.EntityEvent;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
@@ -24,13 +17,18 @@ import nl.tudelft.simulation.jstats.distributions.DistNormal;
 import nl.tudelft.simulation.jstats.streams.MersenneTwister;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
 import nl.tudelft.simulation.language.d3.CartesianPoint;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.rmi.RemoteException;
+import java.util.HashMap;
 
 /**
  * 
  * @author daiwenzhi
  *
  */
-public class Submarine extends EventProducer implements EventListenerInterface {
+public class Submarine /* extends  EventProducer  implements EventListenerInterface */ {
 
 	/**
 	 * 
@@ -50,8 +48,8 @@ public class Submarine extends EventProducer implements EventListenerInterface {
 	/** the stream -- ugly but works. */
 	private static StreamInterface stream = new MersenneTwister();
 
-	public Torpedo _t1 = null;
-	public Torpedo _t2 = null;
+	private Torpedo _t1 = null;
+	private Torpedo _t2 = null;
 
 	private int weaponCounts = 0;
 
@@ -97,7 +95,7 @@ public class Submarine extends EventProducer implements EventListenerInterface {
 		this._mdata.stopTime = this._mdata.startTime + Math.abs(new DistNormal(stream, 9, 1.8).draw());
 		this.simulator.scheduleEventAbs(this._mdata.stopTime, this, this, "next", null);
 	}
-
+	/*
 	@Override
 	public synchronized void notify(EventInterface event) throws RemoteException {
 		if (event.getType().equals(Fleet.FLEET_LOCATION_UPDATE_EVENT)) {
@@ -140,7 +138,8 @@ public class Submarine extends EventProducer implements EventListenerInterface {
 			Visual2dService.getInstance().update(_mdata);
 		}
 	}
-	@Subscribe(threadMode = ThreadMode.MAIN)
+	*/
+	@Subscribe
 	public synchronized void onEntityEvent(EntityEvent event) throws SimRuntimeException {
 		this.simulator.scheduleEventAbs(this.simulator.getSimTime().plus(2.0), new Executable()
         {

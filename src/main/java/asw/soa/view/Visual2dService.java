@@ -28,7 +28,7 @@ public class Visual2dService {
 		return instance;
 	}
 
-	private HashMap<String, Visual2dRender> components = new HashMap<String, Visual2dRender>();
+	private HashMap<String, Visual2dRender> components = new HashMap<>();
 	
 
 	public void addVisualComponent(String name, Visual2dRender c) {
@@ -40,7 +40,7 @@ public class Visual2dService {
 	public synchronized void update(ModelData data) {
 		for (HashMap.Entry<String, Visual2dRender> entry : components.entrySet()) {
 			if (entry.getKey().equals(data.name)) {
-				Visual2dRender v = (Visual2dRender) entry.getValue();
+				Visual2dRender v =  entry.getValue();
 				v.update(data);
 			}
 		}

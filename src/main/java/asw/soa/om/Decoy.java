@@ -1,14 +1,5 @@
 package asw.soa.om;
 
-import java.awt.Color;
-import java.rmi.RemoteException;
-
-import javax.naming.NamingException;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import asw.soa.data.EntityEvent;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
@@ -25,6 +16,12 @@ import nl.tudelft.simulation.jstats.distributions.DistNormal;
 import nl.tudelft.simulation.jstats.streams.MersenneTwister;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
 import nl.tudelft.simulation.language.d3.CartesianPoint;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import javax.naming.NamingException;
+import java.awt.*;
+import java.rmi.RemoteException;
 
 /**
  * 鱼雷诱饵模型
@@ -32,14 +29,14 @@ import nl.tudelft.simulation.language.d3.CartesianPoint;
  * @author daiwenzhi
  *
  */
-public class Decoy extends EventProducer implements EventListenerInterface{
+public class Decoy /* extends EventProducer  implements EventListenerInterface */ {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1020956635649196808L;
 
-	public static final EventType DECOY_LOCATION_MSG = new EventType("DECOY_LOCATION_MSG");
+	private static final EventType DECOY_LOCATION_MSG = new EventType("DECOY_LOCATION_MSG");
 
 	private boolean isFired = false;
 
@@ -66,7 +63,7 @@ public class Decoy extends EventProducer implements EventListenerInterface{
 		_mdata.origin = _mdata.destination = new CartesianPoint(x, y, 0);
 		this.simulator = simulator;
 	}
-
+	/*
 	@Override
 	public void notify(EventInterface event) throws RemoteException {
 		if (isFired && (_mdata.status)) {
@@ -89,7 +86,8 @@ public class Decoy extends EventProducer implements EventListenerInterface{
 		}
 
 	}
-	@Subscribe(threadMode = ThreadMode.MAIN)
+	*/
+	@Subscribe
 	public synchronized void onEntityEvent(EntityEvent event) throws SimRuntimeException {
 		this.simulator.scheduleEventAbs(this.simulator.getSimTime().plus(2.0), new Executable()
         {

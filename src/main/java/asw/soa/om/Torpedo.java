@@ -1,13 +1,5 @@
 package asw.soa.om;
 
-import java.rmi.RemoteException;
-
-import javax.naming.NamingException;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import asw.soa.data.EntityEvent;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
@@ -24,19 +16,24 @@ import nl.tudelft.simulation.jstats.distributions.DistNormal;
 import nl.tudelft.simulation.jstats.streams.MersenneTwister;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
 import nl.tudelft.simulation.language.d3.CartesianPoint;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import javax.naming.NamingException;
+import java.rmi.RemoteException;
 
 /**
  * 
  * @author daiwenzhi
  *
  */
-public class Torpedo extends EventProducer implements EventListenerInterface {
+public class Torpedo /* extends EventProducer implements EventListenerInterface */{
 
 	private static final long serialVersionUID = -8295279255703776031L;
 
-	public static final EventType TORPEDO_LOCATION_MSG = new EventType("TORPEDO_LOCATION_MSG");
+	//public static final EventType TORPEDO_LOCATION_MSG = new EventType("TORPEDO_LOCATION_MSG");
 
-	public boolean isFired = false;
+	private boolean isFired = false;
 
 	/** the stream -- ugly but works. */
 	private static StreamInterface stream = new MersenneTwister();
@@ -66,6 +63,7 @@ public class Torpedo extends EventProducer implements EventListenerInterface {
 		this.simulator = simulator;
 	}
 
+	/*
 	@Override
 	public synchronized void notify(EventInterface event) throws RemoteException {
 
@@ -97,7 +95,8 @@ public class Torpedo extends EventProducer implements EventListenerInterface {
 			}
 		}
 	}
-	@Subscribe(threadMode = ThreadMode.MAIN)
+	*/
+	@Subscribe
 	public synchronized void onEntityEvent(EntityEvent event) throws SimRuntimeException {
 		this.simulator.scheduleEventAbs(this.simulator.getSimTime().plus(2.0), new Executable()
         {
