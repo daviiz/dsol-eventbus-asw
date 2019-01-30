@@ -4,6 +4,8 @@ import java.rmi.RemoteException;
 
 import javax.naming.NamingException;
 
+import org.greenrobot.eventbus.EventBus;
+
 import asw.soa.data.ModelData;
 import asw.soa.om.Decoy;
 import asw.soa.om.Fleet;
@@ -62,11 +64,22 @@ public class ASWModel extends AbstractDSOLModel.TimeDouble<DEVSSimulatorInterfac
 			} catch (NamingException e) {
 				SimLogger.always().error(e);
 			}
+			
+			// 事件注册Event-Bus：
+			EventBus.getDefault().register(f1);
+			EventBus.getDefault().register(f2);
+			EventBus.getDefault().register(s1);
+			
+			
+			
+			
+			
 			// 模型发布显示组件消息：
 			// renderService.render();
 
 			// 发布方 .addListener 订阅方
 			// 战舰1 消息发布
+			/**
 			f1.addListener(f1._decoy1, Fleet.FLEET_LOCATION_UPDATE_EVENT);
 			f1.addListener(f1._decoy2, Fleet.FLEET_LOCATION_UPDATE_EVENT);
 			f1.addListener(f2, Fleet.FLEET_LOCATION_UPDATE_EVENT);
@@ -117,6 +130,7 @@ public class ASWModel extends AbstractDSOLModel.TimeDouble<DEVSSimulatorInterfac
 			f2._decoy1.addListener(s1._t2, Decoy.DECOY_LOCATION_MSG);
 			f2._decoy2.addListener(s1._t1, Decoy.DECOY_LOCATION_MSG);
 			f2._decoy2.addListener(s1._t2, Decoy.DECOY_LOCATION_MSG);
+			*/
 
 		} catch (RemoteException exception) {
 			SimLogger.always().error(exception);

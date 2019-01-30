@@ -1,14 +1,21 @@
 package asw.soa.om;
 
+import java.awt.Color;
 import java.rmi.RemoteException;
 
 import javax.naming.NamingException;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import asw.soa.data.EntityEvent;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
 import asw.soa.main.SimUtil;
 import asw.soa.view.Visual2dService;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
+import nl.tudelft.simulation.dsol.formalisms.eventscheduling.Executable;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.event.EventInterface;
 import nl.tudelft.simulation.event.EventListenerInterface;
@@ -91,6 +98,42 @@ public class Torpedo extends EventProducer implements EventListenerInterface {
 			}
 		}
 	}
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public synchronized void onEntityEvent(EntityEvent event) throws SimRuntimeException {
+		this.simulator.scheduleEventAbs(this.simulator.getSimTime().plus(2.0), new Executable()
+        {
+            @Override
+            public void execute()
+            {
+            	if (isFired) {
+
+        			if (event.name.startsWith("Fleet_")
+        					|| event.name.startsWith("Decoy_")) {
+        				double tmpL = SimUtil.calcLength(_mdata.origin.x, _mdata.origin.y, event.x, event.y);
+
+        				if (tmpL < _mdata.detectRange) {
+        					// 在探测范围内 并且是生存状态的实体才显示通信线
+        					if (event.status == true) {
+        						_mdata.lineData.updateData(_mdata.origin.x, _mdata.origin.y, event.x, event.y);
+        					}
+        					// 在探测范围内 找到更近的 设置其为目标
+        					if (tmpL < lastDistance) {
+        						lastTarget = new EntityMSG(event);
+        						lastDistance = tmpL;
+        					}
+        					// 如果自己的目标已经死亡 在探测范围内寻找目标 找到就重新设置目标
+        					if (lastTarget.status == false) {
+        						lastDistance = tmpL;
+        						lastTarget = new EntityMSG(event);
+        					}
+        				} else {
+        					_mdata.lineData.reset();
+        				}
+        			}
+        		}
+            }
+        });
+	}
 
 	/**
 	 * 鱼雷施放
@@ -131,9 +174,10 @@ public class Torpedo extends EventProducer implements EventListenerInterface {
 		this._mdata.stopTime = this._mdata.startTime + Math.abs(new DistNormal(stream, 9, 1.8).draw());
 		this.simulator.scheduleEventAbs(this._mdata.stopTime, this, this, "next", null);
 
-		super.fireTimedEvent(TORPEDO_LOCATION_MSG,
-				new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y),
-				this.simulator.getSimTime().plus(2.0));
+//		super.fireTimedEvent(TORPEDO_LOCATION_MSG,
+//				new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y),
+//				this.simulator.getSimTime().plus(2.0));
+		EventBus.getDefault().post(new EntityEvent(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y));
 	}
 
 	public void setLocation(CartesianPoint _origin) {

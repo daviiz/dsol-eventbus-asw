@@ -3,3 +3,18 @@
 3 共有两艘潜艇，型号一致，都有同样型号的传感器（传感器范围R3），同样型号的通信设备（通信范围R4）
 4 共有四艘舰艇
 5 舰艇和潜艇初始位置随机
+
+
+
+Fleet_1
+Fleet_2
+Sub_1
+
+Decoy_1_Fleet_1
+Decoy_2_Fleet_1
+
+Decoy_1_Fleet_2
+Decoy_2_Fleet_2
+
+Torpedo_1_Sub_1
+Torpedo_2_Sub_1

@@ -5,11 +5,18 @@ import java.rmi.RemoteException;
 
 import javax.naming.NamingException;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import asw.soa.data.EntityEvent;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
+import asw.soa.event.MessageEvent;
 import asw.soa.main.SimUtil;
 import asw.soa.view.Visual2dService;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
+import nl.tudelft.simulation.dsol.formalisms.eventscheduling.Executable;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.event.EventInterface;
 import nl.tudelft.simulation.event.EventListenerInterface;
@@ -83,6 +90,31 @@ public class Decoy extends EventProducer implements EventListenerInterface{
 		}
 
 	}
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public synchronized void onEntityEvent(EntityEvent event) throws SimRuntimeException {
+		this.simulator.scheduleEventAbs(this.simulator.getSimTime().plus(2.0), new Executable()
+        {
+            @Override
+            public void execute()
+            {
+            	if (isFired && (_mdata.status)) {
+        			if (event.name.startsWith("Torpedo_")) {
+        				double dis = SimUtil.calcLength(_mdata.origin.x, _mdata.origin.y, event.x, event.y);
+        				if (dis < _mdata.detectRange) {
+        					lastThreat = new EntityMSG(event);
+        					if (dis < SimUtil.hit_distance) {
+        						_mdata.color = Color.BLACK;
+        						// isDead = true;
+        						_mdata.status = false;
+        						Visual2dService.getInstance().update(_mdata);
+        					}
+        				}
+
+        			}
+        		}
+            }
+        });
+	}
 
 	/**
 	 * 鱼雷诱饵施放
@@ -127,9 +159,11 @@ public class Decoy extends EventProducer implements EventListenerInterface{
 		this._mdata.stopTime = this._mdata.startTime + Math.abs(new DistNormal(stream, 9, 1.8).draw());
 		this.simulator.scheduleEventAbs(this._mdata.stopTime, this, this, "next", null);
 
-		super.fireTimedEvent(DECOY_LOCATION_MSG,
-				new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y),
-				this.simulator.getSimTime().plus(2.0));
+//		super.fireTimedEvent(DECOY_LOCATION_MSG,
+//				new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y),
+//				this.simulator.getSimTime().plus(2.0));
+		
+		EventBus.getDefault().post(new EntityEvent(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y));
 
 	}
 

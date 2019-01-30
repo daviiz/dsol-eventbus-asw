@@ -3,11 +3,17 @@ package asw.soa.om;
 import java.awt.Color;
 import java.rmi.RemoteException;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import asw.soa.data.EntityEvent;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
 import asw.soa.main.SimUtil;
 import asw.soa.view.Visual2dService;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
+import nl.tudelft.simulation.dsol.formalisms.eventscheduling.Executable;
 import nl.tudelft.simulation.dsol.logger.SimLogger;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.event.EventInterface;
@@ -84,6 +90,10 @@ public class Fleet extends EventProducer implements EventListenerInterface {
 		ModelData d2Data = new ModelData("Decoy_2_" + this._mdata.name);
 		d2Data.origin = d2Data.destination = this._mdata.origin;
 		_decoy2 = new Decoy(d2Data, simulator);
+		
+		//事件注册：
+		EventBus.getDefault().register(_decoy1);
+		EventBus.getDefault().register(_decoy2);
 
 		this.next();
 	}
@@ -114,9 +124,10 @@ public class Fleet extends EventProducer implements EventListenerInterface {
 		// System.out.println(Math.abs(new DistNormal(stream, 9, 1.8).draw()));
 
 		this.simulator.scheduleEventAbs(this._mdata.stopTime, this, this, "next", null);
-		super.fireTimedEvent(FLEET_LOCATION_UPDATE_EVENT,
-				new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y),
-				this.simulator.getSimTime().plus(2.0));
+//		super.fireTimedEvent(FLEET_LOCATION_UPDATE_EVENT,
+//				new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y),
+//				this.simulator.getSimTime().plus(2.0));
+		EventBus.getDefault().post(new EntityEvent(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y));
 
 	}
 
@@ -170,5 +181,61 @@ public class Fleet extends EventProducer implements EventListenerInterface {
 
 			}
 		}
+	}
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public synchronized void onEntityEvent(EntityEvent event) throws SimRuntimeException {
+		this.simulator.scheduleEventAbs(this.simulator.getSimTime().plus(2.0), new Executable()
+        {
+            @Override
+            public void execute()
+            {
+            	if (!isDead) {
+        			if (event.name.startsWith("Fleet_")) {
+        				// System.out.println(name + " received msg: " + tmp.name + " current
+        				// location:x=" + tmp.x + ", y=" + tmp.y);
+
+        				// fireTimedEvent(Fleet.FLEET_LOCATION_UPDATE_EVENT, (LOC)event.getContent(),
+        				// this.simulator.getSimulatorTime());
+
+        			} else if (event.name.startsWith("Torpedo_")) {
+        				// System.out.println(name + " received msg: " + tmp.name + " current
+        				// location:x=" + tmp.x + ", y=" + tmp.y);
+        				double dis = SimUtil.calcLength(_mdata.origin.x, _mdata.origin.y, event.x, event.y);
+
+        				if (dis < _mdata.detectRange) {
+        					if (aswPolicy == 1) {
+        						if (decoyCouts == 2) {
+        							try {
+        								_decoy1.setLocation(_mdata.origin);
+        								simulator.scheduleEventRel(20.0, this, _decoy1, "fire", new Object[] { new EntityMSG(event) });
+        								decoyCouts--;
+
+        							} catch (SimRuntimeException e) {
+        								SimLogger.always().error(e);
+        							}
+        						} else if (decoyCouts == 1) {
+        							try {
+        								_decoy2.setLocation(_mdata.origin);
+        								simulator.scheduleEventRel(120.0, this, _decoy2, "fire", new Object[] { new EntityMSG(event) });
+        								decoyCouts--;
+        							} catch (SimRuntimeException e) {
+        								SimLogger.always().error(e);
+        							}
+        						}
+        					}
+        					lastThreat = new EntityMSG(event);
+        					if (dis < SimUtil.hit_distance) {
+        						// visualComponent.setColor(Color.BLACK);
+        						_mdata.color = Color.BLACK;
+        						Visual2dService.getInstance().update(_mdata);
+        						isDead = true;
+        						_mdata.status = false;
+        					}
+        				}
+
+        			}
+        		}
+            }
+        });
 	}
 }
