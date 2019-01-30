@@ -1,6 +1,5 @@
 package asw.soa.om;
 
-import java.awt.Color;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 
