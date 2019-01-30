@@ -38,7 +38,6 @@ public class Fleet extends EventProducer implements EventListenerInterface {
 	/** the simulator. */
 	private DEVSSimulatorInterface.TimeDouble simulator = null;
 
-
 	/** the stream -- ugly but works. */
 	private static StreamInterface stream = new MersenneTwister();
 
