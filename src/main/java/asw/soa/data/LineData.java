@@ -39,7 +39,7 @@ public class LineData implements java.io.Serializable {
 	}
 
 	public void updateData(double x, double y, double x3, double y3) {
-		// TODO Auto-generated method stub
+
 		this.x1 = (int)x;
 		this.y1 = (int)y;
 		this.x2 = (int)x3;
