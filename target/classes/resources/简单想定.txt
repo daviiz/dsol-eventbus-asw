@@ -18,3 +18,12 @@ Decoy_2_Fleet_2
 
 Torpedo_1_Sub_1
 Torpedo_2_Sub_1
+
+
+网址：http://idea.lanyus.com/
+
+我用的是这个：
+idea15-2018.1.5激活补丁：http://idea.lanyus.com/jar/JetbrainsCrack-2.10-release-enc.jar 
+
+修改hosts很重要！！！
+使用前请将“0.0.0.0 account.jetbrains.com”添加到hosts文件中
