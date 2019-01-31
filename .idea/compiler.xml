@@ -7,7 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="dsol-asw" />
+        <module name="dsol-eventbus-asw" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="dsol-eventbus-asw" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
