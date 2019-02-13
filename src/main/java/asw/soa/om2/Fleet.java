@@ -129,7 +129,7 @@ public class Fleet extends Base {
 	}
 
 	@Override
-	public synchronized void notify(final EventInterface event) throws RemoteException {
+	public synchronized void notify(final EventInterface event){
 		if (!isDead) {
 			EntityMSG tmp = (EntityMSG) event.getContent();
 			if (tmp.belong == this._mdata.belong) {
@@ -238,54 +238,4 @@ public class Fleet extends Base {
         });
 	}
 	*/
-	public void onEvent_ENVIRONMENT_SONAR_DETECTED(EntityMSG event){
-		if (!isDead) {
-			if (event.belong == 1) {
-				//EntityMSG tmp = (EntityMSG) event.getContent();
-				// System.out.println(name + " received msg: " + tmp.name + " current
-				// location:x=" + tmp.x + ", y=" + tmp.y);
-
-				// fireTimedEvent(Fleet.FLEET_LOCATION_UPDATE_EVENT, (LOC)event.getContent(),
-				// this.simulator.getSimulatorTime());
-
-			} else if (event.belong != _mdata.belong) {
-				//EntityMSG tmp = (EntityMSG) event.getContent();
-				// System.out.println(name + " received msg: " + tmp.name + " current
-				// location:x=" + tmp.x + ", y=" + tmp.y);
-				double dis = SimUtil.calcLength(this._mdata.origin.x, this._mdata.origin.y, event.x, event.y);
-
-				if (dis < _mdata.detectRange) {
-					if (aswPolicy == 1) {
-						if (decoyCouts == 2) {
-							try {
-								_decoy1.setLocation(this._mdata.origin);
-								this.simulator.scheduleEventRel(20.0, this, _decoy1, "fire", new Object[] { event });
-								decoyCouts--;
-
-							} catch (SimRuntimeException e) {
-								SimLogger.always().error(e);
-							}
-						} else if (decoyCouts == 1) {
-							try {
-								_decoy2.setLocation(this._mdata.origin);
-								this.simulator.scheduleEventRel(120.0, this, _decoy2, "fire", new Object[] { event });
-								decoyCouts--;
-							} catch (SimRuntimeException e) {
-								SimLogger.always().error(e);
-							}
-						}
-					}
-					lastThreat = event;
-					if (dis < SimUtil.hit_distance) {
-						// visualComponent.setColor(Color.BLACK);
-						_mdata.color = Color.BLACK;
-						Visual2dService.getInstance().update(this._mdata);
-						isDead = true;
-						_mdata.status = false;
-					}
-				}
-
-			}
-		}
-	}
 }

@@ -68,7 +68,7 @@ public class Decoy extends Base {
     }
 
 	@Override
-	public void notify(EventInterface event) throws RemoteException {
+	public void notify(EventInterface event){
 		if (isFired && (_mdata.status)) {
             EntityMSG tmp = (EntityMSG) event.getContent();
 			if (tmp.belong != this._mdata.belong) {
@@ -117,27 +117,6 @@ public class Decoy extends Base {
         });
 	}
 	*/
-
-    public void onEvent_ENVIRONMENT_SONAR_DETECTED(EntityMSG event) {
-        if (isFired && (_mdata.status)) {
-            if (event.belong != _mdata.belong) {
-                //EntityMSG tmp = (EntityMSG) event.getContent();
-                // System.out.println(name+" received msg: "+tmp.name+" current
-                // location:x="+tmp.x+", y="+tmp.y);
-                double dis = SimUtil.calcLength(this._mdata.origin.x, this._mdata.origin.y, event.x, event.y);
-                if (dis < this._mdata.detectRange) {
-                    lastThreat = event;
-                    if (dis < SimUtil.hit_distance) {
-                        _mdata.color = Color.BLACK;
-                        // isDead = true;
-                        _mdata.status = false;
-                        Visual2dService.getInstance().update(_mdata);
-                    }
-                }
-
-            }
-        }
-    }
 
     /**
      * 鱼雷诱饵施放

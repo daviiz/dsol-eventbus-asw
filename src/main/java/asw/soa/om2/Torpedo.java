@@ -63,7 +63,7 @@ public class Torpedo extends Base/* extends EventProducer implements EventListen
 
 
 	@Override
-	public synchronized void notify(EventInterface event) throws RemoteException {
+	public synchronized void notify(EventInterface event){
 
 		if (isFired) {
 			EntityMSG tmp = (EntityMSG) event.getContent();
@@ -178,34 +178,5 @@ public class Torpedo extends Base/* extends EventProducer implements EventListen
 	public void setLocation(CartesianPoint _origin) {
 		this._mdata.origin = _origin;
 		this._mdata.destination = _origin;
-	}
-
-	public void onEvent_ENVIRONMENT_SONAR_DETECTED(EntityMSG tmp) {
-		if (isFired) {
-
-			if (tmp.belong == 1) {
-				//EntityMSG tmp = (EntityMSG) event.getContent();
-				double tmpL = SimUtil.calcLength(this._mdata.origin.x, this._mdata.origin.y, tmp.x, tmp.y);
-
-				if (tmpL < _mdata.detectRange) {
-					// 在探测范围内 并且是生存状态的实体才显示通信线
-					if (tmp.status == true) {
-						_mdata.lineData.updateData(this._mdata.origin.x, this._mdata.origin.y, tmp.x, tmp.y);
-					}
-					// 在探测范围内 找到更近的 设置其为目标
-					if (tmpL < lastDistance) {
-						lastTarget = new EntityMSG(tmp);
-						lastDistance = tmpL;
-					}
-					// 如果自己的目标已经死亡 在探测范围内寻找目标 找到就重新设置目标
-					if (this.lastTarget.status == false) {
-						lastDistance = tmpL;
-						lastTarget = new EntityMSG(tmp);
-					}
-				} else {
-					_mdata.lineData.reset();
-				}
-			}
-		}
 	}
 }

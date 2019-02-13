@@ -102,7 +102,7 @@ public class Submarine extends Base/* extends  EventProducer  implements EventLi
 	}
 
 	@Override
-	public synchronized void notify(EventInterface event) throws RemoteException {
+	public synchronized void notify(EventInterface event) {
 		EntityMSG tmp = (EntityMSG) event.getContent();
 		if (tmp.belong != this._mdata.belong) {
 			//EntityMSG tmp = (EntityMSG) event.getContent();
@@ -194,45 +194,4 @@ public class Submarine extends Base/* extends  EventProducer  implements EventLi
         });
 	}
 	*/
-	public void onEvent_ENVIRONMENT_SONAR_DETECTED(EntityMSG tmp){
-		if (tmp.belong == 1) {
-			//EntityMSG tmp = (EntityMSG) event.getContent();
-			// System.out.println(name+" received msg: "+tmp.name+" current
-			// location:x="+tmp.x+", y="+tmp.y);
-
-			double dis = SimUtil.calcLength(this._mdata.origin.x, this._mdata.origin.y, tmp.x, tmp.y);
-			if (dis < _mdata.detectRange) {
-				// 设置通信线数据
-				_mdata.lineData.updateData(this._mdata.origin.x, this._mdata.origin.y, tmp.x, tmp.y);
-				// 施放鱼雷，对同一目标仅施放一个鱼雷
-				if (!LockedTarget.containsKey(tmp.name)) {
-					if (weaponCounts == 2) {
-						try {
-							_t1.setLocation(this._mdata.origin);
-							this.simulator.scheduleEventRel(2.0, this, _t1, "fire", new Object[] { tmp });
-							weaponCounts--;
-							LockedTarget.put(tmp.name, tmp.name);
-						} catch (SimRuntimeException e) {
-							SimLogger.always().error(e);
-						}
-					} else if (weaponCounts == 1) {
-						try {
-							_t2.setLocation(this._mdata.origin);
-							this.simulator.scheduleEventRel(2.0, this, _t2, "fire", new Object[] { tmp });
-							LockedTarget.put(tmp.name, tmp.name);
-							weaponCounts--;
-						} catch (SimRuntimeException e) {
-							SimLogger.always().error(e);
-						}
-					} else {
-						// 逃逸
-					}
-				}
-				Visual2dService.getInstance().update(_mdata);
-			} else {
-				_mdata.lineData.reset();
-			}
-			Visual2dService.getInstance().update(_mdata);
-		}
-	}
 }

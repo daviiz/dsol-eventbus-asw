@@ -41,6 +41,8 @@ public class Environment extends Base {
 
         System.out.println("====================="+event.getType());
         EntityMSG tmp = (EntityMSG) event.getContent();
-        this.fireEvent(ENVIRONMENT_SONAR_DETECTED, new EntityMSG(tmp));
+        if(tmp != null){
+            this.fireEvent(ENVIRONMENT_SONAR_DETECTED, new EntityMSG(tmp));
+        }
     }
 }
