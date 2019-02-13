@@ -1,20 +1,20 @@
 package asw.soa.main;
 
-import java.rmi.RemoteException;
-
-import javax.naming.NamingException;
-
-import org.greenrobot.eventbus.EventBus;
-
+import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
-import asw.soa.om.Fleet;
-import asw.soa.om.Submarine;
+import asw.soa.om2.Environment;
+import asw.soa.om2.Fleet;
+import asw.soa.om2.Submarine;
 import asw.soa.view.Visual2dService;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.logger.SimLogger;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.language.d3.CartesianPoint;
+import org.greenrobot.eventbus.EventBus;
+
+import javax.naming.NamingException;
+import java.rmi.RemoteException;
 
 /**
  * 
@@ -54,6 +54,7 @@ public class ASWModel extends AbstractDSOLModel.TimeDouble<DEVSSimulatorInterfac
 			s1Data.origin = s1Data.destination = new CartesianPoint(200, 100, 0);
 			s1 = new Submarine(s1Data, this.simulator);
 
+
 			// 视图组件注册：
 			try {
 				Visual2dService.getInstance().register(f1Data.name,simulator,f1Data);
@@ -62,11 +63,18 @@ public class ASWModel extends AbstractDSOLModel.TimeDouble<DEVSSimulatorInterfac
 			} catch (NamingException e) {
 				SimLogger.always().error(e);
 			}
+			//耦合关系：
+			Environment.getInstance().addListener(f1,Environment.ENVIRONMENT_SONAR_DETECTED);
+			Environment.getInstance().addListener(f2,Environment.ENVIRONMENT_SONAR_DETECTED);
+			Environment.getInstance().addListener(s1,Environment.ENVIRONMENT_SONAR_DETECTED);
+
+
+
 			
 			// 事件注册Event-Bus：
-			EventBus.getDefault().register(f1);
-			EventBus.getDefault().register(f2);
-			EventBus.getDefault().register(s1);
+			//EventBus.getDefault().register(f1);
+			//EventBus.getDefault().register(f2);
+			//EventBus.getDefault().register(s1);
 			
 			
 			
