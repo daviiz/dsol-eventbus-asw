@@ -1,6 +1,5 @@
 package asw.soa.om2;
 
-import asw.soa.data.EntityEvent;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
 import asw.soa.main.SimUtil;
@@ -14,7 +13,6 @@ import nl.tudelft.simulation.jstats.distributions.DistNormal;
 import nl.tudelft.simulation.jstats.streams.MersenneTwister;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
 import nl.tudelft.simulation.language.d3.CartesianPoint;
-import org.greenrobot.eventbus.EventBus;
 
 import javax.naming.NamingException;
 import java.rmi.RemoteException;

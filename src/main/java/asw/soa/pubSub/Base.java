@@ -7,7 +7,9 @@ import nl.tudelft.simulation.event.EventProducer;
 import java.rmi.RemoteException;
 
 /**
- *
+ * 事件发布-订阅 基类
+ * @author daiwenzhi
+ * @date 2019年2月13日
  */
 public abstract class Base extends EventProducer implements EventListenerInterface {
 
