@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: dsol:dsol-core:3.03.02" level="project" />
+    <orderEntry type="library" name="Maven: colt:colt:1.2.0" level="project" />
+    <orderEntry type="library" name="Maven: concurrent:concurrent:1.3.4" level="project" />
+    <orderEntry type="library" name="Maven: dsol:dsol-naming:3.03.02" level="project" />
+    <orderEntry type="library" name="Maven: dsol:dsol-base:3.03.02" level="project" />
+    <orderEntry type="library" name="Maven: java3d:vecmath:1.5.1" level="project" />
+    <orderEntry type="library" name="Maven: java3d:j3d-core:1.5.1" level="project" />
+    <orderEntry type="library" name="Maven: dsol:dsol-event:3.03.02" level="project" />
+    <orderEntry type="library" name="Maven: dsol:dsol-interpreter:3.03.02" level="project" />
+    <orderEntry type="library" name="Maven: org.djunits:djunits:3.00.07" level="project" />
+    <orderEntry type="library" name="Maven: org.joda:joda-money:0.12" level="project" />
+    <orderEntry type="library" name="Maven: org.ojalgo:ojalgo:38.2" level="project" />
+    <orderEntry type="library" name="Maven: org.tinylog:tinylog:1.3.5" level="project" />
+    <orderEntry type="library" name="Maven: org.djutils:djutils:1.00.00" level="project" />
+    <orderEntry type="library" name="Maven: dsol:dsol-swing:3.03.02" level="project" />
+    <orderEntry type="library" name="Maven: dsol:dsol-animation:3.03.02" level="project" />
+    <orderEntry type="library" name="Maven: org.jdom:jdom2:2.0.6" level="project" />
+    <orderEntry type="library" name="Maven: xerces:xercesImpl:2.12.0" level="project" />
+    <orderEntry type="library" name="Maven: xml-apis:xml-apis:1.4.01" level="project" />
+    <orderEntry type="library" name="Maven: dsol:dsol-introspection:3.03.02" level="project" />
+    <orderEntry type="library" name="Maven: org.jfree:jfreechart:1.5.0" level="project" />
+    <orderEntry type="library" name="Maven: tablelayout:TableLayout:20020517" level="project" />
+    <orderEntry type="library" name="Maven: jlfgr:jlfgr:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.greenrobot:eventbus:3.1.1" level="project" />
+  </component>
+</module>
