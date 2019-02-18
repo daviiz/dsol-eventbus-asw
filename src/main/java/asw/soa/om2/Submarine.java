@@ -3,7 +3,7 @@ package asw.soa.om2;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
 import asw.soa.main.SimUtil;
-import asw.soa.pubSub.Base;
+import asw.soa.pubSub.DeliveryBase;
 import asw.soa.view.Visual2dService;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.logger.SimLogger;
@@ -23,7 +23,7 @@ import java.util.HashMap;
  * @author daiwenzhi
  *
  */
-public class Submarine extends Base/* extends  EventProducer  implements EventListenerInterface */ {
+public class Submarine extends DeliveryBase/* extends  EventProducer  implements EventListenerInterface */ {
 
 	/**
 	 * 

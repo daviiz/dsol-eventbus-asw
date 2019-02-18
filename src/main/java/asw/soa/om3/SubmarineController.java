@@ -66,7 +66,7 @@ public class SubmarineController {
             }
         }
         if(maneuver!= null)
-            this.simulator.scheduleEventRel(3.0,this, maneuver, "next", new Object[]{ data,object });
+            this.simulator.scheduleEventRel(3.0,this, maneuver, "update", new Object[]{ data,object });
     }
 
     public TorpedoSensor get_t1() {

@@ -3,7 +3,7 @@ package asw.soa.om2;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
 import asw.soa.main.SimUtil;
-import asw.soa.pubSub.Base;
+import asw.soa.pubSub.DeliveryBase;
 import asw.soa.view.Visual2dService;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
@@ -22,7 +22,7 @@ import java.rmi.RemoteException;
  * @author daiwenzhi
  *
  */
-public class Torpedo extends Base/* extends EventProducer implements EventListenerInterface */{
+public class Torpedo extends DeliveryBase/* extends EventProducer implements EventListenerInterface */{
 
 	private static final long serialVersionUID = -8295279255703776031L;
 

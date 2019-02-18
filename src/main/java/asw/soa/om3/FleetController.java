@@ -76,7 +76,7 @@ public class FleetController {
             }
         }
         if(maneuver!= null)
-            this.simulator.scheduleEventRel(3.0,this, maneuver, "next", new Object[]{ data,lastThreat });
+            this.simulator.scheduleEventRel(3.0,this, maneuver, "update", new Object[]{ data,lastThreat });
     }
 
     public FleetManeuver getManeuver() {

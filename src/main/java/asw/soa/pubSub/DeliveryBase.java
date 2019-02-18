@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
  * @author daiwenzhi
  * @date 2019年2月13日
  */
-public abstract class Base extends EventProducer implements EventListenerInterface {
+public abstract class DeliveryBase extends EventProducer implements EventListenerInterface {
 
     @Override
     public abstract void notify(EventInterface event) throws RemoteException;

@@ -1,13 +1,13 @@
 package asw.soa.om2;
 
 import asw.soa.data.EntityMSG;
-import asw.soa.pubSub.Base;
+import asw.soa.pubSub.DeliveryBase;
 import nl.tudelft.simulation.event.EventInterface;
 import nl.tudelft.simulation.event.EventType;
 
 import java.rmi.RemoteException;
 
-public class Environment extends Base {
+public class Environment extends DeliveryBase {
 
     /**
      *

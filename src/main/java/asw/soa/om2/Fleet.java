@@ -3,7 +3,7 @@ package asw.soa.om2;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
 import asw.soa.main.SimUtil;
-import asw.soa.pubSub.Base;
+import asw.soa.pubSub.DeliveryBase;
 import asw.soa.view.Visual2dService;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.logger.SimLogger;
@@ -22,7 +22,7 @@ import java.rmi.RemoteException;
  * 
  * @author daiwenzhi
  */
-public class Fleet extends Base {
+public class Fleet extends DeliveryBase {
 
 	private static final long serialVersionUID = 5337683693470946049L;
 
