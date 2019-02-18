@@ -12,10 +12,8 @@ import nl.tudelft.simulation.event.EventListenerInterface;
 
 import javax.naming.NamingException;
 import java.rmi.RemoteException;
-/**
- * 雷达探测接受消息，发送给Controller
- * */
-public class DecoySensor implements EventListenerInterface {
+
+public class TorpedoSensor implements EventListenerInterface {
 
     /**
      * the simulator.
@@ -24,60 +22,53 @@ public class DecoySensor implements EventListenerInterface {
 
     private ModelData _mdata = null;
 
-    private EntityMSG lastThreat = null;
+    private EntityMSG lastTarget = null;
 
-    private DecoyController controller = null;
+    private TorpedoController controller = null;
 
-    public DecoySensor(final DEVSSimulatorInterface.TimeDouble simulator){
+    private double lastDistance = 250.0;
+
+    public TorpedoSensor(final DEVSSimulatorInterface.TimeDouble simulator){
         this.simulator = simulator;
         Environment.getInstance().addListener(this,Environment.ENVIRONMENT_SONAR_DETECTED);
     }
 
     @Override
-    public void notify(EventInterface event) throws RemoteException {
+    public void notify(EventInterface event){
         if(_mdata!=null && _mdata.status){
+            EntityMSG threatTarget = null;
             EntityMSG tmp = (EntityMSG) event.getContent();
             if(tmp.name.equals(_mdata.name))
                 return;
             if (tmp.belong != this._mdata.belong) {
-
-                // System.out.println(name+" received msg: "+tmp.name+" current
-                // location:x="+tmp.x+", y="+tmp.y);
-                double dis = SimUtil.calcLength(this._mdata.origin.x, this._mdata.origin.y, tmp.x, tmp.y);
-                if (dis < this._mdata.detectRange) {
-                    lastThreat = tmp;
-
-                }else{
-                    lastThreat = new EntityMSG("0");
+                //EntityMSG tmp = (EntityMSG) event.getContent();
+                double tmpL = SimUtil.calcLength(this._mdata.origin.x, this._mdata.origin.y, tmp.x, tmp.y);
+                if (tmpL < _mdata.detectRange) {
+                    threatTarget = tmp;
                 }
-                //雷达探测接受消息，发送给Controller
-                try {
-                    if(controller!= null)
-                        this.simulator.scheduleEventRel(2.0,this, controller, "decide", new Object[]{ _mdata,lastThreat });
-                } catch (SimRuntimeException e) {
-                    e.printStackTrace();
-                }
-
             }
+            //雷达探测接受消息，发送给Controller
+            try {
+                if(controller!= null)
+                    this.simulator.scheduleEventRel(2.0,this, controller, "decide", new Object[]{ _mdata,threatTarget });
+            } catch (SimRuntimeException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
     public synchronized void fire(final ModelData data,final EntityMSG object) throws RemoteException, NamingException, SimRuntimeException {
         //isFired = true;
-        lastThreat = object;
-        this._mdata = data;
+        lastTarget = new EntityMSG("0");
+        if(!object.name.equals("0")){
+            lastTarget = object;
+        }
+        this.set_mdata(data);
         // 视图组件注册：
         Visual2dService.getInstance().register(this._mdata.name, simulator, this._mdata);
         if(controller!= null)
-            this.simulator.scheduleEventRel(2.0,this, controller, "decide", new Object[]{ _mdata,lastThreat });
-    }
-
-    public DecoyController getController() {
-        return controller;
-    }
-
-    public void setController(DecoyController controller) {
-        this.controller = controller;
+            this.simulator.scheduleEventRel(2.0,this, controller, "decide", new Object[]{ _mdata,lastTarget });
     }
 
     public ModelData get_mdata() {
@@ -86,5 +77,13 @@ public class DecoySensor implements EventListenerInterface {
 
     public void set_mdata(ModelData _mdata) {
         this._mdata = _mdata;
+    }
+
+    public TorpedoController getController() {
+        return controller;
+    }
+
+    public void setController(TorpedoController controller) {
+        this.controller = controller;
     }
 }

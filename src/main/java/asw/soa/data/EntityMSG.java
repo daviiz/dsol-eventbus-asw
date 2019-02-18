@@ -31,6 +31,13 @@ public class EntityMSG implements java.io.Serializable {
 	 */
 	public String name;
 
+	public EntityMSG(){
+
+	}
+	public EntityMSG(String name){
+		this.name = name;
+	}
+
 	public EntityMSG(String name, int _belong, boolean _status, double _x, double _y) {
 		this.name = name;
 		this.belong = _belong;

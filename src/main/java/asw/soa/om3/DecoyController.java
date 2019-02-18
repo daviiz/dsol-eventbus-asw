@@ -33,11 +33,14 @@ public class DecoyController {
      */
     public synchronized void decide(final ModelData data,final EntityMSG object) throws SimRuntimeException {
 
-        double dis = SimUtil.calcLength(data.origin.x, data.origin.y, object.x, object.y);
-        if (dis < SimUtil.hit_distance) {
+        if(!object.name.equals("0") ){
+            double dis = SimUtil.calcLength(data.origin.x, data.origin.y, object.x, object.y);
+            if (dis < SimUtil.hit_distance) {
                 data.color = Color.BLACK;
                 data.status = false;
+            }
         }
+
         if(maneuver!= null)
             this.simulator.scheduleEventRel(3.0,this, maneuver, "next", new Object[]{ data,object });
     }

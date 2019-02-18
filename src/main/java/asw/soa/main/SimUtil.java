@@ -14,6 +14,8 @@ public class SimUtil {
 	 */
 	public static int hit_distance = 10;
 
+	public static double interval = 10;
+
 	/**
 	 * 
 	 * @param src_x

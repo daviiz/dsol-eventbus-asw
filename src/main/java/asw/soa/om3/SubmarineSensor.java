@@ -11,24 +11,20 @@ import nl.tudelft.simulation.event.EventListenerInterface;
 
 import java.rmi.RemoteException;
 
-public class FleetSensor implements EventListenerInterface {
+public class SubmarineSensor implements EventListenerInterface {
 
     private ModelData _mdata =null;
 
-    private FleetController controller = null;
-
     private DEVSSimulatorInterface.TimeDouble simulator = null;
 
-    public FleetSensor(final DEVSSimulatorInterface.TimeDouble simulator){
-        this.simulator = simulator;
-        Environment.getInstance().addListener(this,Environment.ENVIRONMENT_SONAR_DETECTED);
-    }
+    private SubmarineController controller = null;
 
-    public FleetSensor(final DEVSSimulatorInterface.TimeDouble simulator,final FleetController controller){
+    public SubmarineSensor(final DEVSSimulatorInterface.TimeDouble simulator){
         this.simulator = simulator;
         Environment.getInstance().addListener(this,Environment.ENVIRONMENT_SONAR_DETECTED);
 
     }
+
     public void startSim(){
         try {
             this.simulator.scheduleEventNow(this, controller, "decide", new Object[]{ _mdata,new EntityMSG("0") });
@@ -37,27 +33,25 @@ public class FleetSensor implements EventListenerInterface {
         }
     }
 
+
     @Override
     public void notify(EventInterface event) throws RemoteException {
-        if (_mdata!=null && _mdata.status ) {
-            EntityMSG lastThreat = new EntityMSG("0");
+        if (_mdata!=null && _mdata.status) {
+            EntityMSG lastTarget = new EntityMSG("0");
             EntityMSG tmp = (EntityMSG) event.getContent();
             if(tmp.name.equals(_mdata.name))
                 return;
-            if (tmp.belong == this._mdata.belong) {
-
-            } else if (tmp.belong != this._mdata.belong) {
+            if (tmp.belong != this._mdata.belong) {
                 double dis = SimUtil.calcLength(this._mdata.origin.x, this._mdata.origin.y, tmp.x, tmp.y);
-
                 if (dis < _mdata.detectRange) {
-                     lastThreat = tmp;
-
+                    lastTarget = tmp;
                 }
+
             }
             //雷达探测接受消息，发送给Controller
             try {
                 if(controller!= null)
-                    this.simulator.scheduleEventRel(2.0,this, controller, "decide", new Object[]{ _mdata,lastThreat });
+                    this.simulator.scheduleEventRel(2.0,this, controller, "decide", new Object[]{ _mdata,lastTarget });
             } catch (SimRuntimeException e) {
                 e.printStackTrace();
             }
@@ -72,11 +66,11 @@ public class FleetSensor implements EventListenerInterface {
         this._mdata = _mdata;
     }
 
-    public FleetController getController() {
+    public SubmarineController getController() {
         return controller;
     }
 
-    public void setController(FleetController controller) {
+    public void setController(SubmarineController controller) {
         this.controller = controller;
     }
 }

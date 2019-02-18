@@ -1,11 +1,6 @@
 package asw.soa.main;
 
-import java.awt.Dimension;
-import java.awt.geom.Rectangle2D;
-import java.rmi.RemoteException;
-
-import javax.naming.NamingException;
-
+import asw.soa.om3.ASWModel3;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.experiment.Replication;
 import nl.tudelft.simulation.dsol.experiment.ReplicationMode;
@@ -15,6 +10,11 @@ import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.dsol.swing.animation.D2.AnimationPanel;
 import nl.tudelft.simulation.dsol.swing.gui.DSOLApplication;
 import nl.tudelft.simulation.dsol.swing.gui.DSOLPanel;
+
+import javax.naming.NamingException;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.rmi.RemoteException;
 /**
  * 
  * @author daiwenzhi
@@ -40,7 +40,8 @@ public class ASWSwingApplication extends DSOLApplication {
 	 */
 	public static void main(final String[] args) throws SimRuntimeException, RemoteException, NamingException {
 		DEVSRealTimeClock.TimeDouble simulator = new DEVSRealTimeClock.TimeDouble(0.1);
-		ASWModel model = new ASWModel(simulator);
+		//ASWModel model = new ASWModel(simulator);
+		ASWModel3 model = new ASWModel3(simulator);
 		Replication.TimeDouble<DEVSSimulatorInterface.TimeDouble> replication = Replication.TimeDouble.create("rep1",
 				0.0, 0.0, 1000000.0, model);
 		DSOLPanel<Double, Double, SimTimeDouble> panel = new DSOLPanel<Double, Double, SimTimeDouble>(model, simulator);

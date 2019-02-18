@@ -45,4 +45,11 @@ public class Environment extends Base {
             this.fireEvent(ENVIRONMENT_SONAR_DETECTED, new EntityMSG(tmp));
         }
     }
+
+    public synchronized void msgCast(final EntityMSG object){
+        EntityMSG tmp = object;
+        if(tmp != null){
+            this.fireEvent(ENVIRONMENT_SONAR_DETECTED, new EntityMSG(tmp));
+        }
+    }
 }
