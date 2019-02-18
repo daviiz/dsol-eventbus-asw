@@ -9,6 +9,6 @@ public class MoveCmd implements java.io.Serializable {
     }
 
     public MoveCmd(){
-        this.cmd = "";
+        this.cmd = "0";
     }
 }

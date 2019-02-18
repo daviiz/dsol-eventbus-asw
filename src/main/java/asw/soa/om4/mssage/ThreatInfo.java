@@ -25,7 +25,7 @@ public class ThreatInfo implements java.io.Serializable {
     public String name;
 
     public ThreatInfo(){
-
+        this.name = "0";
     }
     public ThreatInfo(String name){
         this.name = name;

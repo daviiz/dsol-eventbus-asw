@@ -14,13 +14,22 @@ public class MoveResult implements java.io.Serializable {
      */
     public double z;
 
+    public int belong;
+
     /**
      * 模型实体名称
      */
     public String name;
 
     public MoveResult(){
-
+        this.name = "0";
+    }
+    public MoveResult(String name,int belong,double x,double y,double z){
+        this.name = name;
+        this.belong = belong;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
     
 }

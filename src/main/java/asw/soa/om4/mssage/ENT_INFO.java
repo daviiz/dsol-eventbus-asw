@@ -32,7 +32,7 @@ public class ENT_INFO implements java.io.Serializable {
     public String name;
 
     public ENT_INFO(){
-
+        this.name = "0";
     }
     public ENT_INFO(String name){
         this.name = name;

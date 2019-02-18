@@ -25,9 +25,6 @@ public class Controller extends DeliveryBase {
         if(event.getType() == Sensor.THREAT_INFO){
             ThreatInfo c = (ThreatInfo) event.getContent();
             System.out.println(c);
-        }else if(event.getType() == Maneuver.MOVE_FINISHED){
-
-
         }else if(event.getType() == Maneuver.MOVE_RESULT){
 
         }
