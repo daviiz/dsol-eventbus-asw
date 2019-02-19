@@ -67,7 +67,8 @@ public class FManeuver extends DeliveryBase {
 
 
         this.simulator.scheduleEventAbs(data.stopTime, this, this, "castMoveResult", new Object[]{data});
-
+        // 重置通信线数据
+        data.lineData.reset();
     }
 
     /**
@@ -106,7 +107,8 @@ public class FManeuver extends DeliveryBase {
             this.setMoveCmd((MoveCmd) event.getContent());
 
             this.target = new ENT_INFO(this.moveCmd.threat);
-
+            // 设置通信线数据
+            data.lineData.updateData(data.origin.x, data.origin.y, target.x, target.y);
         }
     }
 
