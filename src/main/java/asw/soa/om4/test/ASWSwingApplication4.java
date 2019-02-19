@@ -1,7 +1,6 @@
 package asw.soa.om4.test;
 
-import asw.soa.main.ASWModel;
-import asw.soa.main.ASWSwingApplication;
+
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.experiment.Replication;
 import nl.tudelft.simulation.dsol.experiment.ReplicationMode;
@@ -48,7 +47,7 @@ public class ASWSwingApplication4 extends DSOLApplication {
                 new AnimationPanel(new Rectangle2D.Double(-100, -100, 400, 400), new Dimension(200, 200), simulator));
         panel.getTabbedPane().setSelectedIndex(1);
         simulator.initialize(replication, ReplicationMode.TERMINATING);
-        new ASWSwingApplication("Anti-Submarine-Warfare v0.4", panel);
+        new ASWSwingApplication4("Anti-Submarine-Warfare v0.4", panel);
     }
 
 }
