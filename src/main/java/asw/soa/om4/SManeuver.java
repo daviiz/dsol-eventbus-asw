@@ -65,6 +65,8 @@ public class SManeuver extends DeliveryBase {
         this.simulator.scheduleEventAbs(data.stopTime, this, this, "castMoveResult", new Object[]{data});
         //输出当前模型的实体信息给Environment：
         //this.simulator.scheduleEventRel(data.stopTime+sigma,this,this,"castENT_INFO",new Object[]{data});
+
+        data.lineData.reset();
     }
 
     private synchronized void castMoveResult(ModelData data) {
@@ -94,6 +96,9 @@ public class SManeuver extends DeliveryBase {
             this.setMoveCmd((MoveCmd) event.getContent());
 
             this.target = new ENT_INFO(this.moveCmd.threat);
+
+            // 设置通信线数据
+            data.lineData.updateData(data.origin.x, data.origin.y, target.x, target.y);
 
 
         }
