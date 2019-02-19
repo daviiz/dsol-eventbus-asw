@@ -48,7 +48,7 @@ public class ASWSwingApplication4 extends DSOLApplication {
                 new AnimationPanel(new Rectangle2D.Double(-100, -100, 400, 400), new Dimension(200, 200), simulator));
         panel.getTabbedPane().setSelectedIndex(1);
         simulator.initialize(replication, ReplicationMode.TERMINATING);
-        new ASWSwingApplication("Anti-Submarine-Warfare", panel);
+        new ASWSwingApplication("Anti-Submarine-Warfare v0.4", panel);
     }
 
 }
