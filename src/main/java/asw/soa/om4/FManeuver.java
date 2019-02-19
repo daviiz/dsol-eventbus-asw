@@ -18,7 +18,9 @@ public class FManeuver extends DeliveryBase {
 
     //public static final EventType ENV_INFO = new EventType("ENV_INFO");
     private String name = "FManeuver";
-
+    /**
+     * 模型-输出，Y 发布标识：
+     */
     public static final EventType MOVE_RESULT = new EventType("MOVE_RESULT");
 
     private DEVSSimulatorInterface.TimeDouble simulator = null;
@@ -95,6 +97,7 @@ public class FManeuver extends DeliveryBase {
 
     /**
      * 模型的输入X: 作为订阅者；接收模型开发者已经订阅的消息
+     * 发布订阅关联由模型开发者维护
      * @param event
      * @throws RemoteException
      */
