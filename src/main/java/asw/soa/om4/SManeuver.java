@@ -1,6 +1,5 @@
 package asw.soa.om4;
 
-import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
 import asw.soa.main.SimUtil;
 import asw.soa.om4.mssage.ENT_INFO;
@@ -15,9 +14,10 @@ import nl.tudelft.simulation.language.d3.CartesianPoint;
 
 import java.rmi.RemoteException;
 
-public class Maneuver extends DeliveryBase {
+public class SManeuver extends DeliveryBase {
 
-    //public static final EventType MOVE_FINISHED = new EventType("MOVE_FINISHED");
+    //public static final EventType ENV_INFO = new EventType("ENV_INFO");
+    private String name = "FManeuver";
 
     public static final EventType MOVE_RESULT = new EventType("MOVE_RESULT");
 
@@ -31,20 +31,18 @@ public class Maneuver extends DeliveryBase {
 
     private double sigma = 10.0;
 
-    public Maneuver(final DEVSSimulatorInterface.TimeDouble simulator, final ModelData data, ENT_INFO target, MoveCmd moveCmd,double sigma){
+    public SManeuver(String name, final DEVSSimulatorInterface.TimeDouble simulator, final ModelData data, double sigma) {
+
+        this.name = name;
         this.simulator = simulator;
         this.data = data;
-        this.target = target;
-        this.moveCmd = moveCmd;
+
         this.sigma = sigma;
-        try {
-            next();
-        } catch (SimRuntimeException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public synchronized void next() throws SimRuntimeException {
+
         this.data.origin = this.data.destination;
 
         if (!this.data.status) {
@@ -53,28 +51,51 @@ public class Maneuver extends DeliveryBase {
             data.destination = new CartesianPoint(data.destination.x + data.speed, data.destination.y + data.speed,
                     0);
         } else {
-            data.destination = SimUtil.nextPoint(data.origin.x, data.origin.y, target.x,
-                    target.y, data.speed, this.moveCmd.cmd.equals("follow"));
-        }
 
+            boolean isFollow = this.moveCmd.cmd.equals("follow");
+            //System.out.println(data.name+"----------"+isFollow+"--------------"+target.name);
+            data.destination = SimUtil.nextPoint(data.origin.x, data.origin.y, target.x,
+                    target.y, data.speed, isFollow);
+        }
         data.startTime = this.simulator.getSimulatorTime();
         data.stopTime = data.startTime + this.sigma;
+        //周期调度实现机动：
         this.simulator.scheduleEventAbs(data.stopTime, this, this, "next", null);
-
-        this.simulator.scheduleEventNow(this,this,"castMoveResult",new Object[]{data});
+        //输出机动结果消息
+        this.simulator.scheduleEventAbs(data.stopTime, this, this, "castMoveResult", new Object[]{data});
+        //输出当前模型的实体信息给Environment：
+        //this.simulator.scheduleEventRel(data.stopTime+sigma,this,this,"castENT_INFO",new Object[]{data});
     }
 
-    public synchronized  void castMoveResult(ModelData data){
+    private synchronized void castMoveResult(ModelData data) {
         super.fireTimedEvent(MOVE_RESULT,
-                new MoveResult(data.name,data.belong, data.origin.x, data.origin.y,0),
+                new MoveResult(data.name, data.belong, data.destination.x, data.destination.y, 0),
                 this.simulator.getSimTime());
+    }
+
+    //    public synchronized void castENT_INFO(ModelData data){
+//        super.fireTimedEvent(ENV_INFO, new ENT_INFO(data),this.simulator.getSimTime());
+//    }
+    public synchronized void Run() {
+        try {
+            next();
+        } catch (SimRuntimeException e) {
+            e.printStackTrace();
+        }
     }
 
 
     @Override
-    public void notify(EventInterface event) throws RemoteException {
-        if(event.getType() == Controller.MOVE_CMD){
-            this.setMoveCmd((MoveCmd)event.getContent());
+    public synchronized void notify(EventInterface event) throws RemoteException {
+
+        //System.out.println("==="+this.data.name + "  ==  "+event.getType());
+
+        if (event.getType() == SController.MOVE_CMD) {
+            this.setMoveCmd((MoveCmd) event.getContent());
+
+            this.target = new ENT_INFO(this.moveCmd.threat);
+
+
         }
     }
 

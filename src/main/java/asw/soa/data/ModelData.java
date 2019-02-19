@@ -79,12 +79,12 @@ public class ModelData implements java.io.Serializable {
 			this.color = Color.RED;
 			this.detectRange = 200;
 			this.belong = 1;
-			this.speed = 2;
+			this.speed = 4;
 		} else if (this.name.startsWith("Sub")) {
 			this.color = Color.BLUE;
 			this.detectRange = 400;
 			this.belong = -1;
-			this.speed = 1;
+			this.speed = 2;
 
 		} else if (this.name.startsWith("Decoy")) {
 			this.color = Color.PINK;

@@ -21,15 +21,16 @@ public class MoveResult implements java.io.Serializable {
      */
     public String name;
 
-    public MoveResult(){
+    public MoveResult() {
         this.name = "0";
     }
-    public MoveResult(String name,int belong,double x,double y,double z){
+
+    public MoveResult(String name, int belong, double x, double y, double z) {
         this.name = name;
         this.belong = belong;
         this.x = x;
         this.y = y;
         this.z = z;
     }
-    
+
 }

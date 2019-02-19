@@ -1,8 +1,9 @@
 package asw.soa.om4.mssage;
+
+import asw.soa.data.ModelData;
+
 /**
- *
  * @author daiwenzhi
- *
  */
 public class ENT_INFO implements java.io.Serializable {
     /**
@@ -31,10 +32,11 @@ public class ENT_INFO implements java.io.Serializable {
      */
     public String name;
 
-    public ENT_INFO(){
+    public ENT_INFO() {
         this.name = "0";
     }
-    public ENT_INFO(String name){
+
+    public ENT_INFO(String name) {
         this.name = name;
     }
 
@@ -50,6 +52,30 @@ public class ENT_INFO implements java.io.Serializable {
         this.name = tmp.name;
         this.belong = tmp.belong;
         this.status = tmp.status;
+        this.x = tmp.x;
+        this.y = tmp.y;
+    }
+
+    public ENT_INFO(ModelData tmp) {
+        this.name = tmp.name;
+        this.belong = tmp.belong;
+        this.status = tmp.status;
+        this.x = tmp.destination.x;
+        this.y = tmp.destination.y;
+    }
+
+    public ENT_INFO(MoveResult tmp) {
+        this.name = tmp.name;
+        this.belong = tmp.belong;
+        this.status = true;
+        this.x = tmp.x;
+        this.y = tmp.y;
+    }
+
+    public ENT_INFO(ThreatInfo tmp) {
+        this.name = tmp.name;
+        this.belong = tmp.belong;
+        this.status = true;
         this.x = tmp.x;
         this.y = tmp.y;
     }

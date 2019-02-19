@@ -24,10 +24,11 @@ public class ThreatInfo implements java.io.Serializable {
      */
     public String name;
 
-    public ThreatInfo(){
+    public ThreatInfo() {
         this.name = "0";
     }
-    public ThreatInfo(String name){
+
+    public ThreatInfo(String name) {
         this.name = name;
     }
 
@@ -40,6 +41,14 @@ public class ThreatInfo implements java.io.Serializable {
     }
 
     public ThreatInfo(ThreatInfo tmp) {
+        this.name = tmp.name;
+        this.belong = tmp.belong;
+        this.status = tmp.status;
+        this.x = tmp.x;
+        this.y = tmp.y;
+    }
+
+    public ThreatInfo(ENT_INFO tmp) {
         this.name = tmp.name;
         this.belong = tmp.belong;
         this.status = tmp.status;
