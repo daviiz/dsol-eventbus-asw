@@ -1,9 +1,9 @@
 package asw.soa.om4;
 
-import asw.soa.om4.mssage.ENT_INFO;
-import asw.soa.om4.mssage.MoveCmd;
-import asw.soa.om4.mssage.MoveResult;
-import asw.soa.om4.mssage.ThreatInfo;
+import asw.soa.om4.message.ENT_INFO;
+import asw.soa.om4.message.MoveCmd;
+import asw.soa.om4.message.MoveResult;
+import asw.soa.om4.message.ThreatInfo;
 import asw.soa.pubSub.DeliveryBase;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;

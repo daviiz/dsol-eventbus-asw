@@ -1,4 +1,4 @@
-package asw.soa.om4.mssage;
+package asw.soa.om4.message;
 
 public class MoveResult implements java.io.Serializable {
     /**
