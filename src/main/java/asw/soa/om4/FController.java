@@ -56,6 +56,6 @@ public class FController extends DeliveryBase {
     }
 
     private synchronized void castMOVE_CMD(MoveResult currentPos,ThreatInfo info){
-        super.fireTimedEvent(MOVE_CMD,new MoveCmd(currentPos,info),this.simulator.getSimTime());
+        super.fireTimedEvent(MOVE_CMD,new MoveCmd(currentPos,info,"escape"),this.simulator.getSimTime());
     }
 }

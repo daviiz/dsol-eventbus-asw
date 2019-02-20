@@ -36,7 +36,7 @@ public class SSensor extends DeliveryBase {
     public synchronized void notify(EventInterface event) throws RemoteException {
         //System.out.println("==="+this.currentPos.name + "  ==  "+event.getType());
 
-        if (event.getType() == Environment.ENV_INFO) {
+        if (event.getType() == Submarine.THREAT_ENT_INFO) {
             ENT_INFO ent = (ENT_INFO) event.getContent();
             if ((!currentPos.name.equals("0")) && (currentPos.belong != ent.belong)) {
                 try {

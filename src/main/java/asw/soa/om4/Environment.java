@@ -25,17 +25,9 @@ public class Environment extends DeliveryBase {
 
     @Override
     public synchronized void notify(EventInterface event) throws RemoteException {
-        if (event.getType() == FManeuver.MOVE_RESULT || event.getType() == SManeuver.MOVE_RESULT) {
-            MoveResult info = (MoveResult) event.getContent();
-            try {
-                this.simulator.scheduleEventNow(this, this, "castENVI_INFO", new Object[]{info});
-            } catch (SimRuntimeException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private synchronized void castENVI_INFO(MoveResult data) {
-        super.fireTimedEvent(ENV_INFO, new ENT_INFO(data), this.simulator.getSimTime());
+        //if (event.getType() == Fleet.FLEET_ENT_INFO || event.getType() == Submarine.SUBMARINE_ENT_INFO) {
+            ENT_INFO info = (ENT_INFO) event.getContent();
+            super.fireTimedEvent(ENV_INFO, info, this.simulator.getSimTime());
+        //}
     }
 }
