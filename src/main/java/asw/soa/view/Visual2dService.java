@@ -1,14 +1,13 @@
 package asw.soa.view;
 
-import java.rmi.RemoteException;
-import java.util.HashMap;
-
-import javax.naming.NamingException;
-
 import asw.soa.data.ModelData;
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.logger.SimLogger;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface.TimeDouble;
+
+import javax.naming.NamingException;
+import java.rmi.RemoteException;
+import java.util.HashMap;
 
 public class Visual2dService {
 

@@ -1,6 +1,5 @@
 package asw.soa.main;
 
-import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
 import asw.soa.om2.Environment;
 import asw.soa.om2.Fleet;
@@ -11,7 +10,6 @@ import nl.tudelft.simulation.dsol.logger.SimLogger;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.language.d3.CartesianPoint;
-import org.greenrobot.eventbus.EventBus;
 
 import javax.naming.NamingException;
 import java.rmi.RemoteException;

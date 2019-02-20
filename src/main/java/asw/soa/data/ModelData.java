@@ -1,8 +1,8 @@
 package asw.soa.data;
 
-import java.awt.Color;
-
 import nl.tudelft.simulation.language.d3.CartesianPoint;
+
+import java.awt.*;
 
 /**
  * 

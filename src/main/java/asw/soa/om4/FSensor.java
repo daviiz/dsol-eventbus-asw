@@ -25,11 +25,25 @@ public class FSensor extends DeliveryBase {
 
     private double sigma = 5.0;
 
+    private ENT_INFO target;
+
     public FSensor(String name, final DEVSSimulatorInterface.TimeDouble simulator, final double detectRange, final double sigma) {
         this.name = name;
         this.simulator = simulator;
         this.detectRange = detectRange;
         this.sigma = sigma;
+        target = new ENT_INFO();
+        try {
+            next();
+        } catch (SimRuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void next() throws SimRuntimeException {
+        //周期调度实现机动：
+        castThreatInfo(target);
+        this.simulator.scheduleEventRel(this.sigma, this, this, "next", null);
     }
 
     @Override
@@ -38,29 +52,21 @@ public class FSensor extends DeliveryBase {
 
         if (event.getType() == Fleet.THREAT_ENT_INFO) {
             ENT_INFO ent = (ENT_INFO) event.getContent();
-            if ((!currentPos.name.equals("0")) && (currentPos.belong != ent.belong)) {
-                try {
-                    double distance = SimUtil.calcLength(currentPos.x, currentPos.y, ent.x, ent.y);
-                    if (distance < this.detectRange)
-                        this.simulator.scheduleEventRel(this.sigma, this, this, "castThreatInfo", new Object[]{ent});
-                } catch (SimRuntimeException e) {
-                    e.printStackTrace();
-                }
+            if ((!currentPos.name.equals("0")) && (currentPos.belong != target.belong)) {
+                double distance = SimUtil.calcLength(currentPos.x, currentPos.y, target.x, target.y);
+                if (distance < this.detectRange)
+                    target = ent;
             }
         } else if (event.getType() == FManeuver.MOVE_RESULT) {
             //传感器接收自己的机动信息，决策依据：
             currentPos = (MoveResult) event.getContent();
         }
+
     }
 
     private synchronized void castThreatInfo(ENT_INFO ent) {
         super.fireTimedEvent(FSensor.THREAT_INFO, ent, this.simulator.getSimTime());
     }
-
-//    public void pub(){
-//        this.fireTimedEvent(THREAT_INFO,new ThreatInfo(),
-//                this.simulator.getSimTime());
-//    }
 
     public double getDetectRange() {
         return detectRange;

@@ -68,7 +68,8 @@ public class FManeuver extends DeliveryBase {
         this.simulator.scheduleEventAbs(data.stopTime, this, this, "next", null);
 
 
-        this.simulator.scheduleEventAbs(data.stopTime, this, this, "castMoveResult", new Object[]{data});
+        //this.simulator.scheduleEventAbs(data.stopTime, this, this, "castMoveResult", new Object[]{data});
+        castMoveResult(data);
         // 重置通信线数据
         data.lineData.reset();
     }
@@ -80,7 +81,7 @@ public class FManeuver extends DeliveryBase {
      */
     private synchronized void castMoveResult(ModelData data) {
         super.fireTimedEvent(MOVE_RESULT,
-                new MoveResult(data.name, data.belong, data.destination.x, data.destination.y, 0),
+                new MoveResult(data.name, data.belong, data.origin.x, data.origin.y, 0),
                 this.simulator.getSimTime());
     }
 

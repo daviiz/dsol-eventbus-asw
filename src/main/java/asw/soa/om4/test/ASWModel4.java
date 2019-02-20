@@ -1,7 +1,9 @@
 package asw.soa.om4.test;
 
 import asw.soa.data.ModelData;
-import asw.soa.om4.*;
+import asw.soa.om4.Environment;
+import asw.soa.om4.Fleet;
+import asw.soa.om4.Submarine;
 import asw.soa.view.Visual2dService;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.logger.SimLogger;
@@ -48,8 +50,8 @@ public class ASWModel4 extends AbstractDSOLModel.TimeDouble<DEVSSimulatorInterfa
             e.printStackTrace();
         }
         //开始运行：
-        fleet1.Run();
-        sub1.Run();
+        //fleet1.Run();
+        //sub1.Run();
     }
 
     public ASWModel4(final DEVSSimulatorInterface.TimeDouble simulator) {

@@ -1,18 +1,15 @@
 package asw.soa.view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.image.ImageObserver;
-import java.rmi.RemoteException;
-
-import javax.naming.NamingException;
-
 import asw.soa.data.LineData;
 import asw.soa.data.ModelData;
-import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.animation.D2.Renderable2D;
+import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.simulators.SimulatorInterface;
+
+import javax.naming.NamingException;
+import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.rmi.RemoteException;
 
 /**
  * 

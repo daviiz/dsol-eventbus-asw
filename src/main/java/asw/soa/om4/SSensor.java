@@ -25,11 +25,25 @@ public class SSensor extends DeliveryBase {
 
     private double sigma = 5.0;
 
+    private ENT_INFO target;
+
     public SSensor(String name, final DEVSSimulatorInterface.TimeDouble simulator, final double detectRange, final double sigma) {
         this.name = name;
         this.simulator = simulator;
         this.detectRange = detectRange;
         this.sigma = sigma;
+        target = new ENT_INFO();
+        try {
+            next();
+        } catch (SimRuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void next() throws SimRuntimeException {
+        //周期调度实现机动：
+        castThreatInfo(target);
+        this.simulator.scheduleEventRel(this.sigma, this, this, "next", null);
     }
 
     @Override

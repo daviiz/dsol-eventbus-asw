@@ -4,7 +4,6 @@ import asw.soa.data.ModelData;
 import asw.soa.om4.message.ENT_INFO;
 import asw.soa.om4.message.MoveResult;
 import asw.soa.pubSub.DeliveryBase;
-import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.event.EventInterface;
 import nl.tudelft.simulation.event.EventType;

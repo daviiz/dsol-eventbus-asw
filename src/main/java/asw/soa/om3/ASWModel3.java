@@ -3,8 +3,6 @@ package asw.soa.om3;
 import asw.soa.data.EntityMSG;
 import asw.soa.data.ModelData;
 import asw.soa.om2.Environment;
-import asw.soa.om2.Fleet;
-import asw.soa.om2.Submarine;
 import asw.soa.view.Visual2dService;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.logger.SimLogger;

@@ -1,15 +1,14 @@
 package asw.soa.view;
 
-import java.rmi.RemoteException;
-
-import javax.media.j3d.BoundingSphere;
-import javax.media.j3d.Bounds;
-import javax.vecmath.Point3d;
-
 import asw.soa.data.ModelData;
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.language.d3.DirectedPoint;
+
+import javax.media.j3d.BoundingSphere;
+import javax.media.j3d.Bounds;
+import javax.vecmath.Point3d;
+import java.rmi.RemoteException;
 
 class VisualComponent  implements Locatable{
 	
