@@ -29,16 +29,16 @@ public class ASWModel4 extends AbstractDSOLModel.TimeDouble<DEVSSimulatorInterfa
         ModelData f1Data = new ModelData("Fleet_1");
         f1Data.origin = f1Data.destination = new CartesianPoint(-200, -50, 0);
 
-        fleetFManeuver = new FManeuver("fleetFManeuver", this.simulator, f1Data, 10.0);
-        fleetFController = new FController("fleetFController", this.simulator, 5.0);
-        fleetFSensor = new FSensor("fleetFSensor", this.simulator, f1Data.detectRange, 5.0);
+        fleetFManeuver = new FManeuver(f1Data.name, this.simulator, f1Data, 10.0);
+        fleetFController = new FController(f1Data.name, this.simulator, 5.0);
+        fleetFSensor = new FSensor(f1Data.name, this.simulator, f1Data.detectRange, 5.0);
 
         ModelData s1Data = new ModelData("Sub_1");
         s1Data.origin = s1Data.destination = new CartesianPoint(200, 100, 0);
 
-        submarineFManeuver = new SManeuver("submarineFManeuver", this.simulator, s1Data, 10.0);
-        submarineFController = new SController("submarineFController", this.simulator, 5.0);
-        submarineFSensor = new SSensor("submarineFSensor", this.simulator, s1Data.detectRange, 5.0);
+        submarineFManeuver = new SManeuver(s1Data.name, this.simulator, s1Data, 10.0);
+        submarineFController = new SController(s1Data.name, this.simulator, 5.0);
+        submarineFSensor = new SSensor(s1Data.name, this.simulator, s1Data.detectRange, 5.0);
 
         env = new Environment("env", this.simulator);
 

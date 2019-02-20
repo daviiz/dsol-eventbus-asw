@@ -104,7 +104,7 @@ public class FManeuver extends DeliveryBase {
     @Override
     public synchronized void notify(EventInterface event) throws RemoteException {
 
-        //System.out.println("==="+this.data.name + "  ==  "+event.getType());
+//        System.out.println("=================  "+event.getSource());
 
         if (event.getType() == FController.MOVE_CMD) {
             this.setMoveCmd((MoveCmd) event.getContent());
