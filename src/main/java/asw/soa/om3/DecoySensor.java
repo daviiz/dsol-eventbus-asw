@@ -12,9 +12,10 @@ import nl.tudelft.simulation.event.EventListenerInterface;
 
 import javax.naming.NamingException;
 import java.rmi.RemoteException;
+
 /**
  * 雷达探测接受消息，发送给Controller
- * */
+ */
 public class DecoySensor implements EventListenerInterface {
 
     /**
@@ -28,16 +29,16 @@ public class DecoySensor implements EventListenerInterface {
 
     private DecoyController controller = null;
 
-    public DecoySensor(final DEVSSimulatorInterface.TimeDouble simulator){
+    public DecoySensor(final DEVSSimulatorInterface.TimeDouble simulator) {
         this.simulator = simulator;
-        Environment.getInstance().addListener(this,Environment.ENVIRONMENT_SONAR_DETECTED);
+        Environment.getInstance().addListener(this, Environment.ENVIRONMENT_SONAR_DETECTED);
     }
 
     @Override
     public void notify(EventInterface event) throws RemoteException {
-        if(_mdata!=null && _mdata.status){
+        if (_mdata != null && _mdata.status) {
             EntityMSG tmp = (EntityMSG) event.getContent();
-            if(tmp.name.equals(_mdata.name))
+            if (tmp.name.equals(_mdata.name))
                 return;
             if (tmp.belong != this._mdata.belong) {
 
@@ -47,13 +48,13 @@ public class DecoySensor implements EventListenerInterface {
                 if (dis < this._mdata.detectRange) {
                     lastThreat = tmp;
 
-                }else{
+                } else {
                     lastThreat = new EntityMSG("0");
                 }
                 //雷达探测接受消息，发送给Controller
                 try {
-                    if(controller!= null)
-                        this.simulator.scheduleEventRel(2.0,this, controller, "decide", new Object[]{ _mdata,lastThreat });
+                    if (controller != null)
+                        this.simulator.scheduleEventRel(2.0, this, controller, "decide", new Object[]{_mdata, lastThreat});
                 } catch (SimRuntimeException e) {
                     e.printStackTrace();
                 }
@@ -62,14 +63,14 @@ public class DecoySensor implements EventListenerInterface {
         }
     }
 
-    public synchronized void fire(final ModelData data,final EntityMSG object) throws RemoteException, NamingException, SimRuntimeException {
+    public synchronized void fire(final ModelData data, final EntityMSG object) throws RemoteException, NamingException, SimRuntimeException {
         //isFired = true;
         lastThreat = object;
         this._mdata = data;
         // 视图组件注册：
         Visual2dService.getInstance().register(this._mdata.name, simulator, this._mdata);
-        if(controller!= null)
-            this.simulator.scheduleEventRel(2.0,this, controller, "decide", new Object[]{ _mdata,lastThreat });
+        if (controller != null)
+            this.simulator.scheduleEventRel(2.0, this, controller, "decide", new Object[]{_mdata, lastThreat});
     }
 
     public DecoyController getController() {

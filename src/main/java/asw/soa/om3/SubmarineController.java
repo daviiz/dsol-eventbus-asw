@@ -21,15 +21,14 @@ public class SubmarineController {
 
     private HashMap<String, String> LockedTarget = new HashMap<String, String>();
 
-    public SubmarineController(final DEVSSimulatorInterface.TimeDouble simulator){
+    public SubmarineController(final DEVSSimulatorInterface.TimeDouble simulator) {
         this.simulator = simulator;
     }
 
     public synchronized void decide(final ModelData data, final EntityMSG object) throws SimRuntimeException {
-        if(object.name.equals("0")){
+        if (object.name.equals("0")) {
             data.lineData.reset();
-        }
-        else{
+        } else {
             // 设置通信线数据
             data.lineData.updateData(data.origin.x, data.origin.y, object.x, object.y);
             // 施放鱼雷，对同一目标仅施放一个鱼雷
@@ -38,8 +37,8 @@ public class SubmarineController {
                     try {
                         //_t1.set_mdata(data);
                         //_t1 = new TorpedoSensor(this.simulator);
-                        if(_t1 != null){
-                            this.simulator.scheduleEventRel(2.0, this, _t1, "fire", new Object[] { data,object });
+                        if (_t1 != null) {
+                            this.simulator.scheduleEventRel(2.0, this, _t1, "fire", new Object[]{data, object});
                             weaponCounts--;
                             LockedTarget.put(object.name, object.name);
                         }
@@ -51,8 +50,8 @@ public class SubmarineController {
                     try {
                         //_t2.set_mdata(data);
                         //_t2 = new TorpedoSensor(this.simulator);
-                        if(_t2 != null){
-                            this.simulator.scheduleEventRel(2.0, this, _t2, "fire", new Object[] { data,object });
+                        if (_t2 != null) {
+                            this.simulator.scheduleEventRel(2.0, this, _t2, "fire", new Object[]{data, object});
                             LockedTarget.put(object.name, object.name);
                             weaponCounts--;
                         }
@@ -65,8 +64,8 @@ public class SubmarineController {
                 }
             }
         }
-        if(maneuver!= null)
-            this.simulator.scheduleEventRel(3.0,this, maneuver, "update", new Object[]{ data,object });
+        if (maneuver != null)
+            this.simulator.scheduleEventRel(3.0, this, maneuver, "update", new Object[]{data, object});
     }
 
     public TorpedoSensor get_t1() {

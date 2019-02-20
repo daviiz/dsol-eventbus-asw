@@ -29,13 +29,13 @@ public class ASWModel4 extends AbstractDSOLModel.TimeDouble<DEVSSimulatorInterfa
         ModelData s1Data = new ModelData("Sub_1");
         s1Data.origin = s1Data.destination = new CartesianPoint(200, 100, 0);
 
-        fleet1 = new Fleet(this.simulator,f1Data,10.0);
-        sub1 = new Submarine(this.simulator,s1Data,10.0);
+        fleet1 = new Fleet(f1Data.name,this.simulator, f1Data, 20.0);
+        sub1 = new Submarine(f1Data.name,this.simulator, s1Data, 10.0);
         env = new Environment("env", this.simulator);
 
         //事件发布订阅：模型之间的数据交换
-        fleet1.addListener(env,Fleet.FLEET_ENT_INFO);
-        sub1.addListener(env,Submarine.SUBMARINE_ENT_INFO);
+        fleet1.addListener(env, Fleet.FLEET_ENT_INFO);
+        sub1.addListener(env, Submarine.SUBMARINE_ENT_INFO);
         env.addListener(fleet1, Environment.ENV_INFO);
         env.addListener(sub1, Environment.ENV_INFO);
 
@@ -50,8 +50,8 @@ public class ASWModel4 extends AbstractDSOLModel.TimeDouble<DEVSSimulatorInterfa
             e.printStackTrace();
         }
         //开始运行：
-        //fleet1.Run();
-        //sub1.Run();
+        fleet1.Run();
+        sub1.Run();
     }
 
     public ASWModel4(final DEVSSimulatorInterface.TimeDouble simulator) {

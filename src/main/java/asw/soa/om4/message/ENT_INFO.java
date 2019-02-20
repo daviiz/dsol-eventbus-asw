@@ -28,6 +28,11 @@ public class ENT_INFO implements java.io.Serializable {
     public double y;
 
     /**
+     * 发送者标识ID
+     */
+    public String senderId;
+
+    /**
      * 模型实体名称
      */
     public String name;
@@ -60,8 +65,8 @@ public class ENT_INFO implements java.io.Serializable {
         this.name = tmp.name;
         this.belong = tmp.belong;
         this.status = tmp.status;
-        this.x = tmp.destination.x;
-        this.y = tmp.destination.y;
+        this.x = tmp.origin.x;
+        this.y = tmp.origin.y;
     }
 
     public ENT_INFO(MoveResult tmp) {

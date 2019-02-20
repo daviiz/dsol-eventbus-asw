@@ -3,6 +3,11 @@ package asw.soa.om4.message;
 public class ThreatInfo implements java.io.Serializable {
 
     /**
+     * 发送者标识ID
+     */
+    public String senderId;
+
+    /**
      * 红蓝方归属：1 红方，0 中立方，-1 蓝方
      */
     public int belong;

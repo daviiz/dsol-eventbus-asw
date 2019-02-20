@@ -33,11 +33,6 @@ public class SSensor extends DeliveryBase {
         this.detectRange = detectRange;
         this.sigma = sigma;
         target = new ENT_INFO();
-        try {
-            next();
-        } catch (SimRuntimeException e) {
-            e.printStackTrace();
-        }
     }
 
     public synchronized void next() throws SimRuntimeException {
@@ -48,18 +43,13 @@ public class SSensor extends DeliveryBase {
 
     @Override
     public synchronized void notify(EventInterface event) throws RemoteException {
-        //System.out.println("==="+this.currentPos.name + "  ==  "+event.getType());
 
         if (event.getType() == Submarine.THREAT_ENT_INFO) {
             ENT_INFO ent = (ENT_INFO) event.getContent();
-            if ((!currentPos.name.equals("0")) && (currentPos.belong != ent.belong)) {
-                try {
-                    double distance = SimUtil.calcLength(currentPos.x, currentPos.y, ent.x, ent.y);
-                    if (distance < this.detectRange)
-                        this.simulator.scheduleEventRel(this.sigma, this, this, "castThreatInfo", new Object[]{ent});
-                } catch (SimRuntimeException e) {
-                    e.printStackTrace();
-                }
+            if (ent.belong == 1) {
+                double distance = SimUtil.calcLength(currentPos.x, currentPos.y, ent.x, ent.y);
+                if (distance < this.detectRange)
+                    target = ent;
             }
         } else if (event.getType() == SManeuver.MOVE_RESULT) {
             //传感器接收自己的机动信息，决策依据：
@@ -68,13 +58,17 @@ public class SSensor extends DeliveryBase {
     }
 
     private synchronized void castThreatInfo(ENT_INFO ent) {
+        ent.senderId = this.name;
         super.fireTimedEvent(SSensor.THREAT_INFO, ent, this.simulator.getSimTime());
     }
 
-//    public void pub(){
-//        this.fireTimedEvent(THREAT_INFO,new ThreatInfo(),
-//                this.simulator.getSimTime());
-//    }
+    public synchronized void Run() {
+        try {
+            next();
+        } catch (SimRuntimeException e) {
+            e.printStackTrace();
+        }
+    }
 
     public double getDetectRange() {
         return detectRange;

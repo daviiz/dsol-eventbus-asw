@@ -15,24 +15,23 @@ public class Fleet extends DeliveryBase {
     public static final EventType FLEET_ENT_INFO = new EventType("FLEET_ENT_INFO");
     public static final EventType THREAT_ENT_INFO = new EventType("THREAT_ENT_INFO");
 
-
+    private String name;
     private FSensor fleetFSensor;
     private FController fleetFController;
     private FManeuver fleetFManeuver;
 
     private ModelData data;
-    private double sigma;
 
     private DEVSSimulatorInterface.TimeDouble simulator;
 
-    public Fleet(final DEVSSimulatorInterface.TimeDouble simulator,ModelData data,double sigma){
+    public Fleet(String name,final DEVSSimulatorInterface.TimeDouble simulator, ModelData data, double sigma) {
         this.simulator = simulator;
         this.data = data;
-        this.sigma = sigma;
+        this.name = name;
         //原子模型实例化：
-        fleetFManeuver = new FManeuver(this.data.name, simulator, data, sigma);
-        fleetFController = new FController(this.data.name, simulator, sigma/2-0.05);
-        fleetFSensor = new FSensor(this.data.name, simulator, data.detectRange, sigma/2-0.01);
+        fleetFManeuver = new FManeuver(this.name, simulator, data, sigma);
+        fleetFController = new FController(this.name, simulator, sigma);
+        fleetFSensor = new FSensor(this.name, simulator, data.detectRange, sigma);
 
         //事件发布订阅：模型之间的数据交换
         fleetFManeuver.addListener(this, FManeuver.MOVE_RESULT);
@@ -41,23 +40,26 @@ public class Fleet extends DeliveryBase {
         fleetFSensor.addListener(fleetFController, FSensor.THREAT_INFO);
         fleetFController.addListener(fleetFManeuver, FController.MOVE_CMD);
 
-        this.addListener(fleetFSensor,Fleet.THREAT_ENT_INFO);
+        this.addListener(fleetFSensor, Fleet.THREAT_ENT_INFO);
+
+        this.Run();
 
     }
 
     /**
-     *
      * @param event
      * @throws RemoteException
      */
     @Override
     public void notify(EventInterface event) throws RemoteException {
-        if (event.getType() == FManeuver.MOVE_RESULT ) {
+        if (event.getType() == FManeuver.MOVE_RESULT) {
             MoveResult info = (MoveResult) event.getContent();
+            info.senderId = this.name;
             super.fireTimedEvent(FLEET_ENT_INFO, new ENT_INFO(info), this.simulator.getSimTime());
         }
-        if (event.getType() == Environment.ENV_INFO ) {
+        if (event.getType() == Environment.ENV_INFO) {
             ENT_INFO info = (ENT_INFO) event.getContent();
+            info.senderId = this.name;
             super.fireTimedEvent(THREAT_ENT_INFO, new ENT_INFO(info), this.simulator.getSimTime());
         }
     }
@@ -67,5 +69,7 @@ public class Fleet extends DeliveryBase {
      */
     public synchronized void Run() {
         fleetFManeuver.Run();
+        fleetFController.Run();
+        fleetFSensor.Run();
     }
 }

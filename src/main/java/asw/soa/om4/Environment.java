@@ -10,11 +10,10 @@ import java.rmi.RemoteException;
 
 public class Environment extends DeliveryBase {
 
-    private String name;
-
     public static final EventType ENV_INFO = new EventType("ENT_INFO");
 
-    private DEVSSimulatorInterface.TimeDouble simulator = null;
+    private String name;
+    private DEVSSimulatorInterface.TimeDouble simulator;
 
     public Environment(String name, final DEVSSimulatorInterface.TimeDouble simulator) {
         this.name = name;
@@ -23,9 +22,9 @@ public class Environment extends DeliveryBase {
 
     @Override
     public synchronized void notify(EventInterface event) throws RemoteException {
-        //if (event.getType() == Fleet.FLEET_ENT_INFO || event.getType() == Submarine.SUBMARINE_ENT_INFO) {
-            ENT_INFO info = (ENT_INFO) event.getContent();
-            super.fireTimedEvent(ENV_INFO, info, this.simulator.getSimTime());
-        //}
+        ENT_INFO info = (ENT_INFO) event.getContent();
+        if (info.name.equals("0")) return;
+        info.senderId = this.name;
+        super.fireTimedEvent(ENV_INFO, info, this.simulator.getSimTime());
     }
 }

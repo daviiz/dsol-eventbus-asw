@@ -15,14 +15,14 @@ public class TorpedoController {
 
     private double lastDistance = 250.0;
 
-    private EntityMSG  lastTarget = null;
+    private EntityMSG lastTarget = null;
 
     /**
      * the simulator.
      */
     private DEVSSimulatorInterface.TimeDouble simulator = null;
 
-    public TorpedoController(final DEVSSimulatorInterface.TimeDouble simulator){
+    public TorpedoController(final DEVSSimulatorInterface.TimeDouble simulator) {
         this.simulator = simulator;
     }
 
@@ -36,17 +36,17 @@ public class TorpedoController {
      * @throws SimRuntimeException
      */
     public synchronized void decide(final ModelData data, final EntityMSG object) throws SimRuntimeException {
-        if(object.name.equals("0")){
+        if (object.name.equals("0")) {
             data.lineData.reset();
             lastTarget = object;
-        }else{
+        } else {
             double tmpL = SimUtil.calcLength(data.origin.x, data.origin.y, object.x, object.y);
             // 在探测范围内 并且是生存状态的实体才显示通信线
             if (data.status == true) {
                 data.lineData.updateData(data.origin.x, data.origin.y, object.x, object.y);
             }
             // 在探测范围内 找到更近的 设置其为目标
-            if (tmpL < lastDistance ) {
+            if (tmpL < lastDistance) {
                 lastTarget = new EntityMSG(object);
                 lastDistance = tmpL;
             }
@@ -56,8 +56,8 @@ public class TorpedoController {
                 lastTarget = new EntityMSG(object);
             }
         }
-        if(maneuver!= null)
-            this.simulator.scheduleEventRel(3.0,this, maneuver, "next", new Object[]{ data,lastTarget });
+        if (maneuver != null)
+            this.simulator.scheduleEventRel(3.0, this, maneuver, "next", new Object[]{data, lastTarget});
     }
 
 

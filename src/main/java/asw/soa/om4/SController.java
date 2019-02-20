@@ -32,14 +32,16 @@ public class SController extends DeliveryBase {
         this.name = name;
         this.simulator = simulator;
         this.sigma = sigma;
-        next();
     }
 
-    private synchronized void next(){
-        if (target.name.equals("0") || currentPos.name.equals("0"))
-            return;
+    private synchronized void next() {
+
         try {
-            castMOVE_CMD(currentPos,target);
+            if (target.name.equals("0") || currentPos.name.equals("0")) {
+
+            } else {
+                castMOVE_CMD(currentPos, target);
+            }
             this.simulator.scheduleEventAbs(this.simulator.getSimulatorTime() + this.sigma, this, this, "next", null);
         } catch (SimRuntimeException e) {
             e.printStackTrace();
@@ -57,11 +59,15 @@ public class SController extends DeliveryBase {
             //控制器接收自己的机动信息，决策依据
             currentPos = (MoveResult) event.getContent();
         }
-
-
     }
 
     private synchronized void castMOVE_CMD(MoveResult currentPos, ThreatInfo info) {
-        super.fireTimedEvent(MOVE_CMD, new MoveCmd(currentPos, info, "follow"), this.simulator.getSimTime());
+        MoveCmd msg = new MoveCmd(currentPos, info, "follow");
+        msg.senderId = this.name;
+        super.fireTimedEvent(MOVE_CMD, msg, this.simulator.getSimTime());
+    }
+
+    public synchronized void Run() {
+        next();
     }
 }

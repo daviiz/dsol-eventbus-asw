@@ -14,15 +14,16 @@ public class TorpedoManeuver extends EventProducer {
 
     //private boolean isFired = false;
 
-    /** the simulator. */
+    /**
+     * the simulator.
+     */
     private DEVSSimulatorInterface.TimeDouble simulator = null;
 
-    public TorpedoManeuver(final DEVSSimulatorInterface.TimeDouble simulator )
-    {
+    public TorpedoManeuver(final DEVSSimulatorInterface.TimeDouble simulator) {
         this.simulator = simulator;
     }
 
-    public synchronized void next(final ModelData _mdata, final EntityMSG lastTarget) throws SimRuntimeException{
+    public synchronized void next(final ModelData _mdata, final EntityMSG lastTarget) throws SimRuntimeException {
         _mdata.origin = _mdata.destination;
 
         if (lastTarget.name.equals("0") || lastTarget.status == false) {
@@ -33,10 +34,10 @@ public class TorpedoManeuver extends EventProducer {
         }
         _mdata.startTime = this.simulator.getSimulatorTime();
 
-        _mdata.stopTime = _mdata.startTime  + SimUtil.interval;
+        _mdata.stopTime = _mdata.startTime + SimUtil.interval;
 
         //this.simulator.scheduleEventAbs(_mdata.stopTime, this, Environment.getInstance(), "msgCast", new Object[]{new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, _mdata.origin.x, _mdata.origin.y)});
-        this.simulator.scheduleEventAbs(_mdata.stopTime, this, this, "next", new Object[]{ _mdata ,new EntityMSG("0")});
+        this.simulator.scheduleEventAbs(_mdata.stopTime, this, this, "next", new Object[]{_mdata, new EntityMSG("0")});
         super.fireTimedEvent(TORPEDO_LOCATION_MSG,
                 new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, _mdata.origin.x, _mdata.origin.y),
                 this.simulator.getSimTime());

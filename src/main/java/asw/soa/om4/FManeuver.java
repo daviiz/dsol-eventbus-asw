@@ -16,7 +16,6 @@ import java.rmi.RemoteException;
 
 public class FManeuver extends DeliveryBase {
 
-    //public static final EventType ENV_INFO = new EventType("ENV_INFO");
     private String name = "FManeuver";
     /**
      * 模型-输出，Y 发布标识：
@@ -45,6 +44,7 @@ public class FManeuver extends DeliveryBase {
 
     /**
      * 机动
+     *
      * @throws SimRuntimeException
      */
     public synchronized void next() throws SimRuntimeException {
@@ -77,12 +77,13 @@ public class FManeuver extends DeliveryBase {
     /**
      * 模型输出-Y,供订阅者接收的消息:
      * demo输出机动结果消息--1.给模型自己的传感器和控制器，告知当前自己的位置信息；2.输出机动信息到环境模型，供其他模型接收；
+     *
      * @param data
      */
     private synchronized void castMoveResult(ModelData data) {
-        super.fireTimedEvent(MOVE_RESULT,
-                new MoveResult(data.name, data.belong, data.origin.x, data.origin.y, 0),
-                this.simulator.getSimTime());
+        MoveResult msg = new MoveResult(data.name, data.belong, data.origin.x, data.origin.y, 0);
+        msg.senderId = this.name;
+        super.fireTimedEvent(MOVE_RESULT,msg,this.simulator.getSimTime());
     }
 
     /**
@@ -99,6 +100,7 @@ public class FManeuver extends DeliveryBase {
     /**
      * 模型的输入X: 作为订阅者；接收模型开发者已经订阅的消息
      * 发布订阅关联由模型开发者维护
+     *
      * @param event
      * @throws RemoteException
      */

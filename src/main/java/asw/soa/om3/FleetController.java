@@ -30,22 +30,22 @@ public class FleetController {
      */
     private DEVSSimulatorInterface.TimeDouble simulator = null;
 
-    public FleetController(final DEVSSimulatorInterface.TimeDouble simulator){
+    public FleetController(final DEVSSimulatorInterface.TimeDouble simulator) {
         this.simulator = simulator;
     }
 
     public synchronized void decide(final ModelData data, final EntityMSG object) throws SimRuntimeException {
         EntityMSG lastThreat = new EntityMSG("0");
-        if(!object.name.equals("0")){
+        if (!object.name.equals("0")) {
             double dis = SimUtil.calcLength(data.origin.x, data.origin.y, object.x, object.y);
             if (aswPolicy == 1) {
                 if (decoyCouts == 2) {
                     try {
                         //_decoy1.setLocation(this._mdata.origin);
                         //_decoy1 = new DecoySensor(this.simulator);
-                        if(_decoy1 != null){
+                        if (_decoy1 != null) {
                             //_decoy1.set_mdata(data);
-                            this.simulator.scheduleEventRel(20.0, this, _decoy1, "fire", new Object[] {data, object });
+                            this.simulator.scheduleEventRel(20.0, this, _decoy1, "fire", new Object[]{data, object});
                             decoyCouts--;
                         }
 
@@ -57,8 +57,8 @@ public class FleetController {
                         //_decoy2.setLocation(this._mdata.origin);
                         //_decoy2 = new DecoySensor(this.simulator);
                         //_decoy2.set_mdata(data);
-                        if(_decoy2 != null){
-                            this.simulator.scheduleEventRel(120.0, this, _decoy2, "fire", new Object[] { data,object });
+                        if (_decoy2 != null) {
+                            this.simulator.scheduleEventRel(120.0, this, _decoy2, "fire", new Object[]{data, object});
                             decoyCouts--;
                         }
                     } catch (SimRuntimeException e) {
@@ -75,8 +75,8 @@ public class FleetController {
                 data.status = false;
             }
         }
-        if(maneuver!= null)
-            this.simulator.scheduleEventRel(3.0,this, maneuver, "update", new Object[]{ data,lastThreat });
+        if (maneuver != null)
+            this.simulator.scheduleEventRel(3.0, this, maneuver, "update", new Object[]{data, lastThreat});
     }
 
     public FleetManeuver getManeuver() {

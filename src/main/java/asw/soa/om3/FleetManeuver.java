@@ -73,8 +73,8 @@ public class FleetManeuver extends EventProducer {
 
     }
 
-    public void startSim()throws SimRuntimeException{
-            this.next();
+    public void startSim() throws SimRuntimeException {
+        this.next();
     }
 
     public ModelData get_mdata() {

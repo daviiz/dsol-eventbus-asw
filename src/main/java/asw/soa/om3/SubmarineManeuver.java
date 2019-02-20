@@ -34,7 +34,7 @@ public class SubmarineManeuver extends EventProducer {
 
     private DEVSSimulatorInterface.TimeDouble simulator = null;
 
-    public SubmarineManeuver(final DEVSSimulatorInterface.TimeDouble simulator){
+    public SubmarineManeuver(final DEVSSimulatorInterface.TimeDouble simulator) {
         this.simulator = simulator;
     }
 
@@ -42,13 +42,14 @@ public class SubmarineManeuver extends EventProducer {
         this._mdata = _mdata;
         this.lastThreat = lastThreat;
     }
+
     public synchronized void next() throws SimRuntimeException {
         _mdata.origin = _mdata.destination;
         // this.destination = new CartesianPoint(-100 + stream.nextInt(0, 200), -100 +
         // stream.nextInt(0, 200), 0);
         _mdata.destination = new CartesianPoint(_mdata.destination.x + _mdata.speed, _mdata.destination.y + _mdata.speed, 0);
         _mdata.startTime = this.simulator.getSimulatorTime();
-        _mdata.stopTime = _mdata.startTime +  SimUtil.interval;
+        _mdata.stopTime = _mdata.startTime + SimUtil.interval;
 
         //this.simulator.scheduleEventRel(SimUtil.interval, this, Environment.getInstance(), "msgCast", new Object[]{new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, _mdata.origin.x, _mdata.origin.y)});
         this.simulator.scheduleEventAbs(_mdata.stopTime, this, this, "next", null);
@@ -56,7 +57,8 @@ public class SubmarineManeuver extends EventProducer {
                 new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, _mdata.origin.x, _mdata.origin.y),
                 this.simulator.getSimTime());
     }
-    public void startSim()throws SimRuntimeException{
+
+    public void startSim() throws SimRuntimeException {
         this.next();
     }
 }

@@ -20,9 +20,10 @@ public class DecoyController {
      */
     private DEVSSimulatorInterface.TimeDouble simulator = null;
 
-    public DecoyController(final DEVSSimulatorInterface.TimeDouble simulator){
+    public DecoyController(final DEVSSimulatorInterface.TimeDouble simulator) {
         this.simulator = simulator;
     }
+
     /**
      * 接收雷达探测的信息，决策
      *
@@ -31,9 +32,9 @@ public class DecoyController {
      * @throws NamingException
      * @throws SimRuntimeException
      */
-    public synchronized void decide(final ModelData data,final EntityMSG object) throws SimRuntimeException {
+    public synchronized void decide(final ModelData data, final EntityMSG object) throws SimRuntimeException {
 
-        if(!object.name.equals("0") ){
+        if (!object.name.equals("0")) {
             double dis = SimUtil.calcLength(data.origin.x, data.origin.y, object.x, object.y);
             if (dis < SimUtil.hit_distance) {
                 data.color = Color.BLACK;
@@ -41,8 +42,8 @@ public class DecoyController {
             }
         }
 
-        if(maneuver!= null)
-            this.simulator.scheduleEventRel(3.0,this, maneuver, "next", new Object[]{ data,object });
+        if (maneuver != null)
+            this.simulator.scheduleEventRel(3.0, this, maneuver, "next", new Object[]{data, object});
     }
 
     public DecoyManeuver getManeuver() {

@@ -15,23 +15,23 @@ public class Submarine extends DeliveryBase {
     public static final EventType SUBMARINE_ENT_INFO = new EventType("SUBMARINE_ENT_INFO");
     public static final EventType THREAT_ENT_INFO = new EventType("THREAT_ENT_INFO");
 
+    private String name;
     private SSensor sensor;
     private SController controller;
     private SManeuver maneuver;
 
     private ModelData data;
-    private double sigma;
 
     private DEVSSimulatorInterface.TimeDouble simulator;
 
-    public Submarine(final DEVSSimulatorInterface.TimeDouble simulator,ModelData data,double sigma){
+    public Submarine(String name,final DEVSSimulatorInterface.TimeDouble simulator, ModelData data, double sigma) {
+        this.name = name;
         this.simulator = simulator;
         this.data = data;
-        this.sigma = sigma;
         //原子模型实例化：
-        maneuver = new SManeuver(data.name, this.simulator, data, sigma);
-        controller = new SController(this.data.name, simulator, sigma/2-0.05);
-        sensor = new SSensor(this.data.name, simulator, data.detectRange, sigma/2-0.01);
+        maneuver = new SManeuver(this.name, this.simulator, data, sigma);
+        controller = new SController(this.name, simulator, sigma);
+        sensor = new SSensor(this.name, simulator, data.detectRange, sigma);
 
         //事件发布订阅：模型之间的数据交换
         maneuver.addListener(this, FManeuver.MOVE_RESULT);
@@ -40,25 +40,30 @@ public class Submarine extends DeliveryBase {
         sensor.addListener(controller, FSensor.THREAT_INFO);
         controller.addListener(maneuver, FController.MOVE_CMD);
 
-        this.addListener(sensor,Fleet.THREAT_ENT_INFO);
+        this.addListener(sensor, Fleet.THREAT_ENT_INFO);
 
     }
 
     @Override
     public void notify(EventInterface event) throws RemoteException {
-        if (event.getType() == SManeuver.MOVE_RESULT ) {
+        if (event.getType() == SManeuver.MOVE_RESULT) {
             MoveResult info = (MoveResult) event.getContent();
+            info.senderId = this.name;
             super.fireTimedEvent(SUBMARINE_ENT_INFO, new ENT_INFO(info), this.simulator.getSimTime());
         }
-        if (event.getType() == Environment.ENV_INFO ) {
+        if (event.getType() == Environment.ENV_INFO) {
             ENT_INFO info = (ENT_INFO) event.getContent();
+            info.senderId = this.name;
             super.fireTimedEvent(THREAT_ENT_INFO, new ENT_INFO(info), this.simulator.getSimTime());
         }
     }
+
     /**
      * 模型运行开始方法
      */
     public synchronized void Run() {
         maneuver.Run();
+        controller.Run();
+        sensor.Run();
     }
 }

@@ -38,7 +38,6 @@ public class SManeuver extends DeliveryBase {
         this.data = data;
 
         this.sigma = sigma;
-
     }
 
     public synchronized void next() throws SimRuntimeException {
@@ -62,22 +61,19 @@ public class SManeuver extends DeliveryBase {
         //周期调度实现机动：
         this.simulator.scheduleEventAbs(data.stopTime, this, this, "next", null);
         //输出机动结果消息
-        this.simulator.scheduleEventAbs(data.stopTime, this, this, "castMoveResult", new Object[]{data});
-        //输出当前模型的实体信息给Environment：
-        //this.simulator.scheduleEventRel(data.stopTime+sigma,this,this,"castENT_INFO",new Object[]{data});
+        //this.simulator.scheduleEventAbs(data.stopTime, this, this, "castMoveResult", new Object[]{data});
+        castMoveResult(data);
 
         data.lineData.reset();
     }
 
     private synchronized void castMoveResult(ModelData data) {
-        super.fireTimedEvent(MOVE_RESULT,
-                new MoveResult(data.name, data.belong, data.destination.x, data.destination.y, 0),
-                this.simulator.getSimTime());
+        MoveResult msg = new MoveResult(data.name, data.belong, data.origin.x, data.origin.y, 0);
+        msg.senderId = this.name;
+        super.fireTimedEvent(MOVE_RESULT,msg,this.simulator.getSimTime());
     }
 
-    //    public synchronized void castENT_INFO(ModelData data){
-//        super.fireTimedEvent(ENV_INFO, new ENT_INFO(data),this.simulator.getSimTime());
-//    }
+
     public synchronized void Run() {
         try {
             next();

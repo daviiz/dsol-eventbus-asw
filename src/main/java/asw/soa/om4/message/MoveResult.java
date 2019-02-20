@@ -21,6 +21,11 @@ public class MoveResult implements java.io.Serializable {
      */
     public String name;
 
+    /**
+     * 发送者标识ID
+     */
+    public String senderId;
+
     public MoveResult() {
         this.name = "0";
     }

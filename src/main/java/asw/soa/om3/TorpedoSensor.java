@@ -28,17 +28,17 @@ public class TorpedoSensor implements EventListenerInterface {
 
     private double lastDistance = 250.0;
 
-    public TorpedoSensor(final DEVSSimulatorInterface.TimeDouble simulator){
+    public TorpedoSensor(final DEVSSimulatorInterface.TimeDouble simulator) {
         this.simulator = simulator;
-        Environment.getInstance().addListener(this,Environment.ENVIRONMENT_SONAR_DETECTED);
+        Environment.getInstance().addListener(this, Environment.ENVIRONMENT_SONAR_DETECTED);
     }
 
     @Override
-    public void notify(EventInterface event){
-        if(_mdata!=null && _mdata.status){
+    public void notify(EventInterface event) {
+        if (_mdata != null && _mdata.status) {
             EntityMSG threatTarget = null;
             EntityMSG tmp = (EntityMSG) event.getContent();
-            if(tmp.name.equals(_mdata.name))
+            if (tmp.name.equals(_mdata.name))
                 return;
             if (tmp.belong != this._mdata.belong) {
                 //EntityMSG tmp = (EntityMSG) event.getContent();
@@ -49,8 +49,8 @@ public class TorpedoSensor implements EventListenerInterface {
             }
             //雷达探测接受消息，发送给Controller
             try {
-                if(controller!= null)
-                    this.simulator.scheduleEventRel(2.0,this, controller, "decide", new Object[]{ _mdata,threatTarget });
+                if (controller != null)
+                    this.simulator.scheduleEventRel(2.0, this, controller, "decide", new Object[]{_mdata, threatTarget});
             } catch (SimRuntimeException e) {
                 e.printStackTrace();
             }
@@ -58,17 +58,17 @@ public class TorpedoSensor implements EventListenerInterface {
         }
     }
 
-    public synchronized void fire(final ModelData data,final EntityMSG object) throws RemoteException, NamingException, SimRuntimeException {
+    public synchronized void fire(final ModelData data, final EntityMSG object) throws RemoteException, NamingException, SimRuntimeException {
         //isFired = true;
         lastTarget = new EntityMSG("0");
-        if(!object.name.equals("0")){
+        if (!object.name.equals("0")) {
             lastTarget = object;
         }
         this.set_mdata(data);
         // 视图组件注册：
         Visual2dService.getInstance().register(this._mdata.name, simulator, this._mdata);
-        if(controller!= null)
-            this.simulator.scheduleEventRel(2.0,this, controller, "decide", new Object[]{ _mdata,lastTarget });
+        if (controller != null)
+            this.simulator.scheduleEventRel(2.0, this, controller, "decide", new Object[]{_mdata, lastTarget});
     }
 
     public ModelData get_mdata() {

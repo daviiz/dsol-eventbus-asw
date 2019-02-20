@@ -156,7 +156,6 @@ public class ASWModel3 extends AbstractDSOLModel.TimeDouble<DEVSSimulatorInterfa
 //            SubmarineManeuver_1.set_mdata(s1Data);
 
 
-
             // 视图组件注册：
             try {
                 Visual2dService.getInstance().register(f1Data.name, simulator, f1Data);
@@ -171,7 +170,7 @@ public class ASWModel3 extends AbstractDSOLModel.TimeDouble<DEVSSimulatorInterfa
         } finally {
             //FleetSensor_1.startSim();
             //FleetSensor_2.startSim();
-           //SubmarineSensor_1.startSim();
+            //SubmarineSensor_1.startSim();
             FleetManeuver_1.setLastThreat(new EntityMSG("0"));
             FleetManeuver_1.startSim();
 

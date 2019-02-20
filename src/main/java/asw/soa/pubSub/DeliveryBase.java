@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 
 /**
  * 事件发布-订阅 基类
+ *
  * @author daiwenzhi
  * @date 2019年2月13日
  */

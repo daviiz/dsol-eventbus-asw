@@ -23,7 +23,7 @@ public class DecoyManeuver extends EventProducer {
 
     //private boolean isFired = false;
 
-    public DecoyManeuver(final DEVSSimulatorInterface.TimeDouble simulator){
+    public DecoyManeuver(final DEVSSimulatorInterface.TimeDouble simulator) {
         this.simulator = simulator;
     }
 
@@ -34,10 +34,10 @@ public class DecoyManeuver extends EventProducer {
      * @throws SimRuntimeException on simulation failure
      * @throws NamingException
      */
-    public  synchronized void next(final ModelData _mdata, final EntityMSG lastThreat) throws SimRuntimeException {
- //       if(_mdata != null && (!isFired)){
+    public synchronized void next(final ModelData _mdata, final EntityMSG lastThreat) throws SimRuntimeException {
+        //       if(_mdata != null && (!isFired)){
 //            isFired = true;
-            // 视图组件注册：
+        // 视图组件注册：
 //            try {
 //
 //                Visual2dService.getInstance().register(_mdata.name, simulator, _mdata);
@@ -49,30 +49,30 @@ public class DecoyManeuver extends EventProducer {
 //            }
 //        }
 
- //       if (isFired){
-            _mdata.origin = _mdata.destination;
-            // this.destination = new CartesianPoint(-100 + stream.nextInt(0, 200), -100 +
-            // stream.nextInt(0, 200), 0);
-            // this.destination = new CartesianPoint(this.destination.x+4,
-            // this.destination.y+4, 0);
-            if (!_mdata.status) {
-                _mdata.destination = new CartesianPoint(_mdata.destination.x, _mdata.destination.y, 0);
-            } else if (lastThreat.name.equals("0") ) {
-                // this.destination = new CartesianPoint(this.destination.x, this.destination.y,
-                // 0);
-            } else {
-                _mdata.destination = SimUtil.nextPoint(_mdata.origin.x, _mdata.origin.y, lastThreat.x,
-                        lastThreat.y, _mdata.speed, false);
-            }
-            _mdata.startTime = this.simulator.getSimulatorTime();
-            _mdata.stopTime = _mdata.startTime + SimUtil.interval;
+        //       if (isFired){
+        _mdata.origin = _mdata.destination;
+        // this.destination = new CartesianPoint(-100 + stream.nextInt(0, 200), -100 +
+        // stream.nextInt(0, 200), 0);
+        // this.destination = new CartesianPoint(this.destination.x+4,
+        // this.destination.y+4, 0);
+        if (!_mdata.status) {
+            _mdata.destination = new CartesianPoint(_mdata.destination.x, _mdata.destination.y, 0);
+        } else if (lastThreat.name.equals("0")) {
+            // this.destination = new CartesianPoint(this.destination.x, this.destination.y,
+            // 0);
+        } else {
+            _mdata.destination = SimUtil.nextPoint(_mdata.origin.x, _mdata.origin.y, lastThreat.x,
+                    lastThreat.y, _mdata.speed, false);
+        }
+        _mdata.startTime = this.simulator.getSimulatorTime();
+        _mdata.stopTime = _mdata.startTime + SimUtil.interval;
 
-        this.simulator.scheduleEventAbs(_mdata.stopTime, this, this, "next", new Object[]{ _mdata ,new EntityMSG("0")});
+        this.simulator.scheduleEventAbs(_mdata.stopTime, this, this, "next", new Object[]{_mdata, new EntityMSG("0")});
         super.fireTimedEvent(DECOY_LOCATION_MSG,
                 new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, _mdata.origin.x, _mdata.origin.y),
                 this.simulator.getSimTime());
         //this.simulator.scheduleEventAbs(_mdata.stopTime, this, Environment.getInstance(), "msgCast", new Object[]{new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, _mdata.origin.x, _mdata.origin.y)});
-        }
+    }
 
 //    }
 }

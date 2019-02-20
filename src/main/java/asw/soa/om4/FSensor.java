@@ -33,27 +33,22 @@ public class FSensor extends DeliveryBase {
         this.detectRange = detectRange;
         this.sigma = sigma;
         target = new ENT_INFO();
-        try {
-            next();
-        } catch (SimRuntimeException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public synchronized void next() throws SimRuntimeException {
-        //周期调度实现机动：
+        //周期调度：
         castThreatInfo(target);
         this.simulator.scheduleEventRel(this.sigma, this, this, "next", null);
     }
 
     @Override
     public synchronized void notify(EventInterface event) throws RemoteException {
-        //System.out.println("==="+this.currentPos.name + "  ==  "+event.getType());
-
         if (event.getType() == Fleet.THREAT_ENT_INFO) {
+            //传感器接收环境信息，决策依据：
             ENT_INFO ent = (ENT_INFO) event.getContent();
-            if ((!currentPos.name.equals("0")) && (currentPos.belong != target.belong)) {
-                double distance = SimUtil.calcLength(currentPos.x, currentPos.y, target.x, target.y);
+            if (ent.belong == -1) {
+                double distance = SimUtil.calcLength(currentPos.x, currentPos.y, ent.x, ent.y);
                 if (distance < this.detectRange)
                     target = ent;
             }
@@ -65,7 +60,16 @@ public class FSensor extends DeliveryBase {
     }
 
     private synchronized void castThreatInfo(ENT_INFO ent) {
+        ent.senderId = this.name;
         super.fireTimedEvent(FSensor.THREAT_INFO, ent, this.simulator.getSimTime());
+    }
+
+    public synchronized void Run() {
+        try {
+            this.next();
+        } catch (SimRuntimeException e) {
+            e.printStackTrace();
+        }
     }
 
     public double getDetectRange() {

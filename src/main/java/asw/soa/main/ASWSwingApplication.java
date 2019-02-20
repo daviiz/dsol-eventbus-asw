@@ -14,41 +14,42 @@ import javax.naming.NamingException;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.rmi.RemoteException;
+
 /**
- * 
  * @author daiwenzhi
- *
  */
 public class ASWSwingApplication extends DSOLApplication {
-	/**
-	 * @param title String; the title
-	 * @param panel DSOLPanel&lt;Double,Double,SimTimeDouble&gt;; the panel
-	 */
-	public ASWSwingApplication(final String title, final DSOLPanel<Double, Double, SimTimeDouble> panel) {
-		super(title, panel);
-	}
+    /**
+     * @param title String; the title
+     * @param panel DSOLPanel&lt;Double,Double,SimTimeDouble&gt;; the panel
+     */
+    public ASWSwingApplication(final String title, final DSOLPanel<Double, Double, SimTimeDouble> panel) {
+        super(title, panel);
+    }
 
-	/** */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param args String[]; arguments, expected to be empty
-	 * @throws SimRuntimeException on error
-	 * @throws RemoteException     on error
-	 * @throws NamingException     on error
-	 */
-	public static void main(final String[] args) throws SimRuntimeException, RemoteException, NamingException {
-		DEVSRealTimeClock.TimeDouble simulator = new DEVSRealTimeClock.TimeDouble(0.1);
-		ASWModel model = new ASWModel(simulator);
-		//ASWModel3 model = new ASWModel3(simulator);
-		Replication.TimeDouble<DEVSSimulatorInterface.TimeDouble> replication = Replication.TimeDouble.create("rep1",
-				0.0, 0.0, 1000000.0, model);
-		DSOLPanel<Double, Double, SimTimeDouble> panel = new DSOLPanel<Double, Double, SimTimeDouble>(model, simulator);
-		panel.getTabbedPane().add("animation",
-				new AnimationPanel(new Rectangle2D.Double(-100, -100, 400, 400), new Dimension(200, 200), simulator));
-		panel.getTabbedPane().setSelectedIndex(1);
-		simulator.initialize(replication, ReplicationMode.TERMINATING);
-		new ASWSwingApplication("Anti-Submarine-Warfare", panel);
-	}
+    /**
+     * @param args String[]; arguments, expected to be empty
+     * @throws SimRuntimeException on error
+     * @throws RemoteException     on error
+     * @throws NamingException     on error
+     */
+    public static void main(final String[] args) throws SimRuntimeException, RemoteException, NamingException {
+        DEVSRealTimeClock.TimeDouble simulator = new DEVSRealTimeClock.TimeDouble(0.1);
+        ASWModel model = new ASWModel(simulator);
+        //ASWModel3 model = new ASWModel3(simulator);
+        Replication.TimeDouble<DEVSSimulatorInterface.TimeDouble> replication = Replication.TimeDouble.create("rep1",
+                0.0, 0.0, 1000000.0, model);
+        DSOLPanel<Double, Double, SimTimeDouble> panel = new DSOLPanel<Double, Double, SimTimeDouble>(model, simulator);
+        panel.getTabbedPane().add("animation",
+                new AnimationPanel(new Rectangle2D.Double(-100, -100, 400, 400), new Dimension(200, 200), simulator));
+        panel.getTabbedPane().setSelectedIndex(1);
+        simulator.initialize(replication, ReplicationMode.TERMINATING);
+        new ASWSwingApplication("Anti-Submarine-Warfare", panel);
+    }
 
 }

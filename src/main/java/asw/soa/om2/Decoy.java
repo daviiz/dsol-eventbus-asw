@@ -55,7 +55,7 @@ public class Decoy extends DeliveryBase {
         _mdata = data;
         this.simulator = simulator;
         //事件注册：
-        this.addListener(Environment.getInstance(),Decoy.DECOY_LOCATION_MSG);
+        this.addListener(Environment.getInstance(), Decoy.DECOY_LOCATION_MSG);
 
     }
 
@@ -67,29 +67,29 @@ public class Decoy extends DeliveryBase {
         //this.addListener(this,ENVIRONMENT_SONAR_DETECTED);
     }
 
-	@Override
-	public void notify(EventInterface event){
-		if (isFired && (_mdata.status)) {
+    @Override
+    public void notify(EventInterface event) {
+        if (isFired && (_mdata.status)) {
             EntityMSG tmp = (EntityMSG) event.getContent();
-			if (tmp.belong != this._mdata.belong) {
+            if (tmp.belong != this._mdata.belong) {
 
-				// System.out.println(name+" received msg: "+tmp.name+" current
-				// location:x="+tmp.x+", y="+tmp.y);
-				double dis = SimUtil.calcLength(this._mdata.origin.x, this._mdata.origin.y, tmp.x, tmp.y);
-				if (dis < this._mdata.detectRange) {
-					lastThreat = tmp;
-					if (dis < SimUtil.hit_distance) {
-						_mdata.color = Color.BLACK;
-						// isDead = true;
-						_mdata.status = false;
-						Visual2dService.getInstance().update(_mdata);
-					}
-				}
+                // System.out.println(name+" received msg: "+tmp.name+" current
+                // location:x="+tmp.x+", y="+tmp.y);
+                double dis = SimUtil.calcLength(this._mdata.origin.x, this._mdata.origin.y, tmp.x, tmp.y);
+                if (dis < this._mdata.detectRange) {
+                    lastThreat = tmp;
+                    if (dis < SimUtil.hit_distance) {
+                        _mdata.color = Color.BLACK;
+                        // isDead = true;
+                        _mdata.status = false;
+                        Visual2dService.getInstance().update(_mdata);
+                    }
+                }
 
-			}
-		}
+            }
+        }
 
-	}
+    }
     /*
 	@Subscribe
 	public synchronized void onEntityEvent(EntityEvent event) throws SimRuntimeException {
@@ -161,9 +161,9 @@ public class Decoy extends DeliveryBase {
         this._mdata.stopTime = this._mdata.startTime + Math.abs(new DistNormal(stream, 9, 1.8).draw());
         this.simulator.scheduleEventAbs(this._mdata.stopTime, this, this, "next", null);
 
-		super.fireTimedEvent(DECOY_LOCATION_MSG,
-				new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y),
-				this.simulator.getSimTime().plus(2.0));
+        super.fireTimedEvent(DECOY_LOCATION_MSG,
+                new EntityMSG(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y),
+                this.simulator.getSimTime().plus(2.0));
 
         //EventBus.getDefault().post(new EntityEvent(_mdata.name, _mdata.belong, _mdata.status, this._mdata.origin.x, this._mdata.origin.y));
 

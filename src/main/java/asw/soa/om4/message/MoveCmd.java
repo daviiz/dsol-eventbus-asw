@@ -4,6 +4,11 @@ public class MoveCmd implements java.io.Serializable {
 
     public String cmd;
 
+    /**
+     * 发送者标识ID
+     */
+    public String senderId;
+
     public MoveResult currentPos;
     public ThreatInfo threat;
 
