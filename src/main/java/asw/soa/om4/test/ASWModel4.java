@@ -29,7 +29,7 @@ public class ASWModel4 extends AbstractDSOLModel.TimeDouble<DEVSSimulatorInterfa
         ModelData s1Data = new ModelData("Sub_1");
         s1Data.origin = s1Data.destination = new CartesianPoint(200, 100, 0);
 
-        fleet1 = new Fleet(f1Data.name,this.simulator, f1Data, 20.0);
+        fleet1 = new Fleet(f1Data.name,this.simulator, f1Data, 10.0);
         sub1 = new Submarine(f1Data.name,this.simulator, s1Data, 10.0);
         env = new Environment("env", this.simulator);
 

@@ -41,9 +41,6 @@ public class Fleet extends DeliveryBase {
         fleetFController.addListener(fleetFManeuver, FController.MOVE_CMD);
 
         this.addListener(fleetFSensor, Fleet.THREAT_ENT_INFO);
-
-        this.Run();
-
     }
 
     /**
