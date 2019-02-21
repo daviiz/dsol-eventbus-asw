@@ -40,8 +40,6 @@ public class FManeuver extends DeliveryBase {
         this.sigma = sigma;
         target = new ENT_INFO();
         moveCmd = new MoveCmd();
-
-
     }
 
     /**
