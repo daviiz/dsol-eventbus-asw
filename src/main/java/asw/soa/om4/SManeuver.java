@@ -16,20 +16,19 @@ import java.rmi.RemoteException;
 
 public class SManeuver extends DeliveryBase {
 
-    //public static final EventType ENV_INFO = new EventType("ENV_INFO");
-    private String name = "FManeuver";
+    private String name;
 
     public static final EventType MOVE_RESULT = new EventType("MOVE_RESULT");
 
-    private DEVSSimulatorInterface.TimeDouble simulator = null;
+    private DEVSSimulatorInterface.TimeDouble simulator;
 
-    private ModelData data = null;
+    private ModelData data;
 
-    private ENT_INFO target = new ENT_INFO();
+    private ENT_INFO target;
 
-    private MoveCmd moveCmd = new MoveCmd();
+    private MoveCmd moveCmd;
 
-    private double sigma = 10.0;
+    private double sigma;
 
     public SManeuver(String name, final DEVSSimulatorInterface.TimeDouble simulator, final ModelData data, double sigma) {
 
@@ -38,6 +37,8 @@ public class SManeuver extends DeliveryBase {
         this.data = data;
 
         this.sigma = sigma;
+        target = new ENT_INFO();
+        moveCmd = new MoveCmd();
     }
 
     public synchronized void next() throws SimRuntimeException {

@@ -13,17 +13,17 @@ import java.rmi.RemoteException;
 
 public class FSensor extends DeliveryBase {
 
-    private String name = "FSensor";
+    private String name;
 
     public static final EventType THREAT_INFO = new EventType("THREAT_INFO");
 
-    private MoveResult currentPos = new MoveResult();
+    private MoveResult currentPos;
 
-    private DEVSSimulatorInterface.TimeDouble simulator = null;
+    private DEVSSimulatorInterface.TimeDouble simulator;
 
-    private double detectRange = 400.0;
+    private double detectRange;
 
-    private double sigma = 5.0;
+    private double sigma;
 
     private ENT_INFO target;
 
@@ -33,7 +33,7 @@ public class FSensor extends DeliveryBase {
         this.detectRange = detectRange;
         this.sigma = sigma;
         target = new ENT_INFO();
-
+        currentPos = new MoveResult();
     }
 
     public synchronized void next() throws SimRuntimeException {

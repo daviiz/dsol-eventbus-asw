@@ -14,17 +14,17 @@ import java.rmi.RemoteException;
 
 public class FController extends DeliveryBase {
 
-    private String name = "FController";
+    private String name;
 
     public static final EventType MOVE_CMD = new EventType("MOVE_CMD");
 
     public static final EventType WP_LAUNCH = new EventType("WP_LAUNCH");
 
-    private MoveResult currentPos = new MoveResult();
+    private MoveResult currentPos;
 
-    private ThreatInfo target = new ThreatInfo();
+    private ThreatInfo target;
 
-    private double sigma = 5;
+    private double sigma;
 
     private DEVSSimulatorInterface.TimeDouble simulator = null;
 
@@ -32,6 +32,8 @@ public class FController extends DeliveryBase {
         this.name = name;
         this.simulator = simulator;
         this.sigma = sigma;
+        currentPos = new MoveResult();
+        target = new ThreatInfo();
     }
 
     private synchronized void next() {

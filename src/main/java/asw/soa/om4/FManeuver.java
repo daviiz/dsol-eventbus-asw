@@ -16,29 +16,31 @@ import java.rmi.RemoteException;
 
 public class FManeuver extends DeliveryBase {
 
-    private String name = "FManeuver";
+    private String name;
     /**
      * 模型-输出，Y 发布标识：
      */
     public static final EventType MOVE_RESULT = new EventType("MOVE_RESULT");
 
-    private DEVSSimulatorInterface.TimeDouble simulator = null;
+    private DEVSSimulatorInterface.TimeDouble simulator;
 
-    private ModelData data = null;
+    private ModelData data;
 
-    private ENT_INFO target = new ENT_INFO();
+    private ENT_INFO target;
 
-    private MoveCmd moveCmd = new MoveCmd();
+    private MoveCmd moveCmd;
 
-    private double sigma = 10.0;
+    private double sigma;
 
     public FManeuver(String name, final DEVSSimulatorInterface.TimeDouble simulator, final ModelData data, double sigma) {
 
         this.name = name;
         this.simulator = simulator;
         this.data = data;
-
         this.sigma = sigma;
+        target = new ENT_INFO();
+        moveCmd = new MoveCmd();
+
 
     }
 
